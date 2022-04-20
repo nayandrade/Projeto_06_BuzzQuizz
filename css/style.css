@@ -138,7 +138,8 @@ header > h1 {
     color: #000000;
 }
 
-.quizzes {
+.quizzes,
+.quizzes-user {
     max-width: 100%;
     height: auto;
     display: flex;
