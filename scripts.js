@@ -75,38 +75,58 @@ function renderizarQuizz() {
         </div>  
         `;
         let sequenciaRespostas = [];
-        let respostasEmbaralhadas = []        
+        let respostasEmbaralhadas = [];
 
         for (let j = 0; j < perguntas[i].answers.length; j++) {
-            
             console.log(j);
-            sequenciaRespostas.push(j);            
+            sequenciaRespostas.push(j);
             console.log(sequenciaRespostas);
         }
 
         shuffle(sequenciaRespostas);
         for (let k = 0; k < sequenciaRespostas.length; k++) {
             respostasEmbaralhadas.push(sequenciaRespostas[k]);
-
         }
         console.log(respostasEmbaralhadas);
 
         for (let k = 0; k < respostasEmbaralhadas.length; k++) {
             let id = `pergunta${i}`;
-            let resposta = respostasEmbaralhadas[k]
+            let resposta = respostasEmbaralhadas[k];
             document.getElementById(id).innerHTML += `
-                <div class="quizz-pergunta-resposta" onclick="escolherResposta(this)">
+                <div class="quizz-pergunta-resposta ${perguntas[i].answers[resposta].isCorrectAnswer}" onclick="escolherResposta(this)">
+                    <div class="hidden opacidade"></div>
                     <img src="${perguntas[i].answers[resposta].image}" alt="">
                     <span class="quizz-resposta">${perguntas[i].answers[resposta].text}</span>
                 </div>
             `;
-        }       
+        }
     }
 }
+function escolherResposta(elemento) {
+    let perguntaRespondida = elemento.parentNode   
+    
+    if (perguntaRespondida.classList.contains('respondido') === false) {
+        let valor = elemento.classList.contains('true');
 
-// function escolherResposta(elemento) {
+        console.log(elemento);
+        let bolinha = `#${elemento.parentNode.id}`;
+        console.log(bolinha);
 
-// }
+        if (valor === true) {
+            console.log('resposta correta');
+        } else {
+            console.log('resposta errada');
+        }
+        console.log(valor);
+
+        perguntaRespondida.classList.add('respondido');
+        let perguntaContaner = perguntaRespondida.parentNode
+        perguntaContaner.classList.add('respondida')
+        perguntaContaner.nextElementSibling.scrollIntoView()
+    }
+
+    
+}
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
