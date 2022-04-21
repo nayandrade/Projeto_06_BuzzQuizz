@@ -94,16 +94,118 @@
             </div>  
         </div>
     </div>
-    <div class="conteiner-3 hidden">
-        <div class="quizz-data">
+    <div class="quizz-creator">
+        <div class="creator-page p1 hidden">
             <h1>Comece pelo começo</h1>
-            <div class="data">
+            <div class="creator-data">
                 <input type="text" value="Título do seu quizz"/>
                 <input type="text" value="Url da imagem do seu quizz"/>
                 <input type="text" value="Quantidade de perguntas do quizz"/>
                 <input type="text" value="Quantidade de níveis do quizz"/>
             </div>
-            <button class="proceed">Prosseguir pra criar perguntas</button>
+            <button class="botao-prosseguir">Prosseguir pra criar perguntas</button>
+        </div>
+        <div class="creator-page p2 hidden">
+            <h1>Crie suas perguntas</h1>
+            <div class="fechado p hidden">
+                <h1>Pergunta 1</h1>
+                <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <div class="pergunta">
+                <h1>Pergunta 1</h1>
+                <input type="text" value="Texto da pergunta"/>
+                <input type="text" value="Cor de fundo da pergunta"/>
+                <h1>Resposta correta</h1>
+                <input type="text" value="Resposta correta"/>
+                <input type="text" value="URL da imagem"/>
+                <h1>Respostas incorretas</h1>
+                <input type="text" value="Resposta incorreta 1"/>
+                <input type="text" value="URL da imagem 1"/>
+                <h1 class="hidden"></h1>
+                <input type="text" value="Resposta incorreta 2"/>
+                <input type="text" value="URL da imagem 2"/>
+                <h1 class="hidden"></h1>
+                <input type="text" value="Resposta incorreta 3"/>
+                <input type="text" value="URL da imagem 3"/>
+            </div>
+            <div class="fechado p">
+                <h1>Pergunta 2</h1>
+                <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <div class="pergunta hidden">
+                <h1>Pergunta 2</h1>
+                <input type="text" value="Texto da pergunta"/>
+                <input type="text" value="Cor de fundo da pergunta"/>
+                <h1>Resposta correta</h1>
+                <input type="text" value="Resposta correta"/>
+                <input type="text" value="URL da imagem"/>
+                <h1>Respostas incorretas</h1>
+                <input type="text" value="Resposta incorreta 1"/>
+                <input type="text" value="URL da imagem 1"/>
+                <h1 class="hidden"></h1>
+                <input type="text" value="Resposta incorreta 2"/>
+                <input type="text" value="URL da imagem 2"/>
+                <h1 class="hidden"></h1>
+                <input type="text" value="Resposta incorreta 3"/>
+                <input type="text" value="URL da imagem 3"/>
+            </div>
+            <div class="fechado p">
+                <h1>Pergunta 3</h1>
+                <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <div class="pergunta hidden">
+                <h1>Pergunta 3</h1>
+                <input type="text" value="Texto da pergunta"/>
+                <input type="text" value="Cor de fundo da pergunta"/>
+                <h1>Resposta correta</h1>
+                <input type="text" value="Resposta correta"/>
+                <input type="text" value="URL da imagem"/>
+                <h1>Respostas incorretas</h1>
+                <input type="text" value="Resposta incorreta 1"/>
+                <input type="text" value="URL da imagem 1"/>
+                <h1 class="hidden"></h1>
+                <input type="text" value="Resposta incorreta 2"/>
+                <input type="text" value="URL da imagem 2"/>
+                <h1 class="hidden"></h1>
+                <input type="text" value="Resposta incorreta 3"/>
+                <input type="text" value="URL da imagem 3"/>
+            </div>
+            <button class="botao-prosseguir">Prosseguir pra criar níveis</button>
+        </div>
+        <div class="creator-page p3 hidden">
+            <h1>Agora, decida os níveis</h1>
+            <div class="fechado n hidden">
+                <h1>Nível 1</h1>
+                <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <div class="creator-data nivel">
+                <h1>Nível 1</h1>
+                <input type="text" value="Título do nível"/>
+                <input type="text" value="% de acerto mínima"/>
+                <input type="text" value="URL da imagem do nível"/>
+                <input type="text" value="Descrição do nível"/>
+            </div>
+            <div class="fechado n">
+                <h1>Nível 2</h1>
+                <ion-icon name="create-outline"></ion-icon>
+            </div>
+            <div class="creator-data nivel hidden">
+                <h1>Nível 2</h1>
+                <input type="text" value="Título do nível"/>
+                <input type="text" value="% de acerto mínima"/>
+                <input type="text" value="URL da imagem do nível"/>
+                <input type="text" value="Descrição do nível"/>
+            </div>
+            <button class="botao-prosseguir">Finalizar Quizz</button>
+        </div>
+        <div class="creator-page p4 hidden">
+            <h1>Seu quizz está pronto!</h1>
+            <div class="quizz">
+                <img src="./css/images/download.jpeg" alt="Imagem Cumpade"/>
+                <p>Eiiitaaa Mainhaaa!! Esse Lorem ipsum é só na sacanageeem!! E que abundância meu irmão viuu!!</p>
+            </div>
+            <button class="botao-prosseguir">Acessar Quizz</button>
+            <button class="botao-home">Voltar pra home</button>
         </div>
     </div> 
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
