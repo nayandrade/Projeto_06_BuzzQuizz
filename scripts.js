@@ -47,45 +47,49 @@ function escolherQuizz(element) {
     console.log(index);
     quizzSelecionado = todosQuizzes[index];
     console.log(quizzSelecionado);
-    renderizarQuizz()
+    renderizarQuizz();
 }
 
 function renderizarQuizz() {
-    document.querySelector('.quizz-page').innerHTML = ""
-    console.log(quizzSelecionado.questions)
-    // for (let i = 0; i = quizzSelecionado.questions.length; i++) {
-    //     console.log(i)                
-    // }
-    document.querySelector('.quizz-page').innerHTML += `
+    document.querySelector('.quizz-page').innerHTML = `
         <div class="quizz-topo">
             <div class="topo">
-                <h2>${quizzSelecionado.title}</h2>>    
+                <h2>${quizzSelecionado.title}</h2>
+                <img src="${quizzSelecionado.image}" alt=""/>    
             </div>
         </div>
+    `;
+    let perguntas = quizzSelecionado.questions;
+    console.log(perguntas);
+    console.log(perguntas.length);
+    for (let i = 0; i < perguntas.length; i++) {
+        console.log(i);
+        document.querySelector('.quizz-page').innerHTML += `
+        
         <div class="quizz-perguntas">
-            <div class="quizz-pergunta-titulo">
-                <h3 class="white">${quizzSelecionado.questions[0].title}</h3>
+            <div class="quizz-pergunta-titulo" style="background-color:${quizzSelecionado.questions[i].color}">
+                <h3 class="white">${quizzSelecionado.questions[i].title}</h3>
             </div>
             <div class="quizz-respostas">
                 <div class="quizz-pergunta-resposta">
-                    <img src="${quizzSelecionado.questions[0].answers[0].image}" alt="">
-                    <span class="quizz-resposta">${quizzSelecionado.questions[0].answers[0].text}</span>
+                    <img src="${quizzSelecionado.questions[i].answers[0].image}" alt="">
+                    <span class="quizz-resposta">${quizzSelecionado.questions[i].answers[0].text}</span>
                 </div>
                 <div class="quizz-pergunta-resposta">
-                    <img src="${quizzSelecionado.questions[0].answers[1].image}" alt="">
-                    <span class="quizz-resposta">${quizzSelecionado.questions[0].answers[1].text}</span>
+                    <img src="${quizzSelecionado.questions[i].answers[1].image}" alt="">
+                    <span class="quizz-resposta">${quizzSelecionado.questions[i].answers[1].text}</span>
                 </div>
                 <div class="quizz-pergunta-resposta">
-                    <img src="${quizzSelecionado.questions[0].answers[2].image}" alt="">
-                    <span class="quizz-resposta">${quizzSelecionado.questions[0].answers[2].text}</span>
+                    <img src="${quizzSelecionado.questions[i].answers[2].image}" alt="">
+                    <span class="quizz-resposta">${quizzSelecionado.questions[i].answers[2].text}</span>
                 </div>
                 <div class="quizz-pergunta-resposta">
-                    <img src="${quizzSelecionado.questions[0].answers[3].image}" alt="">
-                    <span class="quizz-resposta">${quizzSelecionado.questions[0].answers[3].text}</span>
+                    <img src="${quizzSelecionado.questions[i].answers[3].image}" alt="">
+                    <span class="quizz-resposta">${quizzSelecionado.questions[i].answers[3].text}</span>
                 </div>
             </div>        
-        </div>
-    
-    
-    `;
+        </div>  
+        `;
+        
+    }
 }
