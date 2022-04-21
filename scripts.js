@@ -25,8 +25,7 @@ function renderizarQuizzes() {
             <div class="quizz" onclick="escolherQuizz(this)">
                 <img src="${todosQuizzes[i].image}" alt=""/>
                 <p>${todosQuizzes[i].title}</p>
-            </div>      
-        
+            </div>             
         `;
     }
 }
@@ -60,36 +59,58 @@ function renderizarQuizz() {
         </div>
     `;
     let perguntas = quizzSelecionado.questions;
-    console.log(perguntas);
+
     console.log(perguntas.length);
     for (let i = 0; i < perguntas.length; i++) {
+        console.log(perguntas[i].answers.length);
         console.log(i);
-        document.querySelector('.quizz-page').innerHTML += `
-        
+        document.querySelector('.quizz-page').innerHTML += `        
         <div class="quizz-perguntas">
-            <div class="quizz-pergunta-titulo" style="background-color:${quizzSelecionado.questions[i].color}">
-                <h3 class="white">${quizzSelecionado.questions[i].title}</h3>
+            <div class="quizz-pergunta-titulo" style="background-color:${perguntas[i].color}">
+                <h3 class="white">${perguntas[i].title}</h3>
             </div>
-            <div class="quizz-respostas">
-                <div class="quizz-pergunta-resposta">
-                    <img src="${quizzSelecionado.questions[i].answers[0].image}" alt="">
-                    <span class="quizz-resposta">${quizzSelecionado.questions[i].answers[0].text}</span>
-                </div>
-                <div class="quizz-pergunta-resposta">
-                    <img src="${quizzSelecionado.questions[i].answers[1].image}" alt="">
-                    <span class="quizz-resposta">${quizzSelecionado.questions[i].answers[1].text}</span>
-                </div>
-                <div class="quizz-pergunta-resposta">
-                    <img src="${quizzSelecionado.questions[i].answers[2].image}" alt="">
-                    <span class="quizz-resposta">${quizzSelecionado.questions[i].answers[2].text}</span>
-                </div>
-                <div class="quizz-pergunta-resposta">
-                    <img src="${quizzSelecionado.questions[i].answers[3].image}" alt="">
-                    <span class="quizz-resposta">${quizzSelecionado.questions[i].answers[3].text}</span>
-                </div>
+            <div class="quizz-respostas" id="pergunta${i}">               
+                
             </div>        
         </div>  
         `;
-        
+        let sequenciaRespostas = [];
+        let respostasEmbaralhadas = []        
+
+        for (let j = 0; j < perguntas[i].answers.length; j++) {
+            
+            console.log(j);
+            sequenciaRespostas.push(j);            
+            console.log(sequenciaRespostas);
+        }
+
+        shuffle(sequenciaRespostas);
+        for (let k = 0; k < sequenciaRespostas.length; k++) {
+            respostasEmbaralhadas.push(sequenciaRespostas[k]);
+
+        }
+        console.log(respostasEmbaralhadas);
+
+        for (let k = 0; k < respostasEmbaralhadas.length; k++) {
+            let id = `pergunta${i}`;
+            let resposta = respostasEmbaralhadas[k]
+            document.getElementById(id).innerHTML += `
+                <div class="quizz-pergunta-resposta" onclick="escolherResposta(this)">
+                    <img src="${perguntas[i].answers[resposta].image}" alt="">
+                    <span class="quizz-resposta">${perguntas[i].answers[resposta].text}</span>
+                </div>
+            `;
+        }       
+    }
+}
+
+// function escolherResposta(elemento) {
+
+// }
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        let j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
     }
 }
