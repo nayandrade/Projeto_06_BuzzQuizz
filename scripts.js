@@ -1,5 +1,8 @@
 let todosQuizzes = [];
 let quizzSelecionado = {};
+const TEMPO2S = 2 * 1000;
+let respostasCorretas = 0;
+let respostasRespondidas = 0;
 
 let userQuizz = {image: "", levels: [], questions: [], title: ""};
 let tamPerguntas = 0;
@@ -108,29 +111,47 @@ function renderizarQuizz() {
     }
 }
 function escolherResposta(elemento) {
-    let perguntaRespondida = elemento.parentNode   
-    
+    let perguntaRespondida = elemento.parentNode;
+
     if (perguntaRespondida.classList.contains('respondido') === false) {
         let valor = elemento.classList.contains('true');
 
-        console.log(elemento);
-        let bolinha = `#${elemento.parentNode.id}`;
-        console.log(bolinha);
-
         if (valor === true) {
             console.log('resposta correta');
+            respostasRespondidas++;
+            respostasCorretas++;
         } else {
             console.log('resposta errada');
+            respostasRespondidas++;
         }
         console.log(valor);
 
         perguntaRespondida.classList.add('respondido');
         let perguntaContaner = perguntaRespondida.parentNode;
         perguntaContaner.classList.add('respondida');
-        perguntaContaner.nextElementSibling.scrollIntoView();
+        let todasRespostas = perguntaRespondida.querySelectorAll(
+            '.quizz-pergunta-resposta'
+        );
+        for (let i = 0; i < todasRespostas.length; i++) {
+            let transparente = todasRespostas[i];
+            if (
+                transparente.classList.contains('false') &&
+                transparente !== elemento
+            ) {
+                transparente.firstElementChild.classList.remove('hidden');
+            } else if (
+                transparente.classList.contains('true') &&
+                transparente !== elemento
+            ) {
+                transparente.firstElementChild.classList.remove('hidden');
+            }
+        }
+        console.log(todasRespostas.length);
+        scrollParaElemento(perguntaContaner.nextElementSibling);
+        console.log(respostasCorretas);
+        console.log(respostasRespondidas);
+        console.log(respostasCorretas / respostasRespondidas);
     }
-
-    
 }
 
 function shuffle(array) {
@@ -138,6 +159,12 @@ function shuffle(array) {
         let j = Math.floor(Math.random() * (i + 1));
         [array[i], array[j]] = [array[j], array[i]];
     }
+}
+
+function scrollParaElemento(elemento) {
+    setTimeout(() => {
+        elemento.scrollIntoView({ block: 'end', behavior: 'smooth' });
+    }, TEMPO2S);
 }
 
 
