@@ -125,9 +125,9 @@ function escolherResposta(elemento) {
         console.log(valor);
 
         perguntaRespondida.classList.add('respondido');
-        let perguntaContaner = perguntaRespondida.parentNode
-        perguntaContaner.classList.add('respondida')
-        perguntaContaner.nextElementSibling.scrollIntoView()
+        let perguntaContaner = perguntaRespondida.parentNode;
+        perguntaContaner.classList.add('respondida');
+        perguntaContaner.nextElementSibling.scrollIntoView();
     }
 
     
@@ -152,25 +152,21 @@ function criarQuizz(){
 }
 
 function getInputFocus(focus){
-    //focus.removeAttribute("value");
     focus.value = "";
 }
 
 function getInputBlur(blur){
     if(blur.getAttribute("name") === "Título do seu quizz"){
-        //blur.setAttribute("value", "Título do seu quizz");
         userQuizz.title = blur.value;
         if(blur.value === ""){
             blur.value = "Título do seu quizz";
         }
     }else if(blur.getAttribute("name") === "Url da imagem do seu quizz"){
-        //blur.setAttribute("value", "Url da imagem do seu quizz");
         userQuizz.image = blur.value;
         if(blur.value === ""){
             blur.value = "Url da imagem do seu quizz";
         }
     }else if(blur.getAttribute("name") === "Quantidade de perguntas do quizz"){
-        //blur.setAttribute("value", "Quantidade de perguntas do quizz");
         if(isNaN(Number(blur.value))){
             alert("Cara, digite um número");
         }else{
@@ -180,7 +176,6 @@ function getInputBlur(blur){
             blur.value = "Quantidade de perguntas do quizz";
         }
     }else if(blur.getAttribute("name") === "Quantidade de níveis do quizz"){
-        //blur.setAttribute("value", "Quantidade de níveis do quizz");
         if(isNaN(Number(blur.value))){
             alert("Cara, digite um número");
         }else{
@@ -204,6 +199,99 @@ function validacaoBasico(){
     }else{
         document.querySelector(".creator-page.p1").classList.add("hidden");
         document.querySelector(".creator-page.p2").classList.remove("hidden");
+        criarPerquntas(tamPerguntas);
+        const arrPerguntas = {title: "", color: "", answers: [{},{},{},{}]};
+        for(let i=0; i<tamPerguntas; i++){
+            userQuizz.questions[i] = arrPerguntas;
+        }
+        for(let j=0; j<tamNiveis; j++){
+            userQuizz.levels[j] = {};
+        }
+    }
+}
+
+function criarPerquntas(pergunta){
+    const page32 = document.querySelector(".creator-page.p2");
+    for(let i=1; i<pergunta; i++){
+        page32.innerHTML += `   <div class="fechado p">
+                                    <h1>Pergunta ${i+1}</h1>
+                                    <ion-icon name="create-outline"></ion-icon>
+                                </div>
+                                <div class="pergunta hidden">
+                                    <h1>Pergunta ${i+1}</h1>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Texto da pergunta ${i}" value="Texto da pergunta"/>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Cor de fundo da pergunta ${i}" value="Cor de fundo da pergunta"/>
+                                    <h1>Resposta correta</h1>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Resposta correta ${i}" value="Resposta correta"/>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem ${i}" value="URL da imagem"/>
+                                    <h1>Respostas incorretas</h1>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 1 ${i}" value="Resposta incorreta 1"/>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 1 ${i}" value="URL da imagem 1"/>
+                                    <h1 class="hidden"></h1>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 2 ${i}" value="Resposta incorreta 2"/>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 2 ${i}" value="URL da imagem 2"/>
+                                    <h1 class="hidden"></h1>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 3 ${i}" value="Resposta incorreta 3"/>
+                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 3 ${i}" value="URL da imagem 3"/>
+                                </div>
+        `;
+    }
+    page32.innerHTML += `<button class="botao-prosseguir">Prosseguir pra criar níveis</button>`;
+}
+
+function getInputBlurPerg(blur){
+    for(let i=0; i<userQuizz.questions.length; i++){
+        if(blur.getAttribute("name") === `Texto da pergunta ${i}`){
+            userQuizz.questions[i]= {title: blur.value, color: userQuizz.questions[i].color, answers: userQuizz.questions[i].answers};
+            if(blur.value === ""){
+                blur.value = "Texto da pergunta";
+            }
+        }else if(blur.getAttribute("name") === `Cor de fundo da pergunta ${i}`){
+            userQuizz.questions[i]= {title: userQuizz.questions[i].title, color: blur.value, answers: userQuizz.questions[i].answers};
+            if(blur.value === ""){
+                blur.value = "Cor de fundo da pergunta";
+            }
+        }else if(blur.getAttribute("name") === `Resposta correta ${i}`){
+            userQuizz.questions[i].answers[0]= {text: blur.value, image: userQuizz.questions[i].answers[0].image};
+            if(blur.value === ""){
+                blur.value = "Resposta correta";
+            }
+        }else if(blur.getAttribute("name") === `URL da imagem ${i}`){
+            userQuizz.questions[i].answers[0]= {text: userQuizz.questions[i].answers[0].text, image: blur.value};
+            if(blur.value === ""){
+                blur.value = "URL da imagem";
+            }
+        }else if(blur.getAttribute("name") === `Resposta incorreta 1 ${i}`){
+            userQuizz.questions[i].answers[1]= {text: blur.value, image: userQuizz.questions[i].answers[1].image};
+            if(blur.value === ""){
+                blur.value = "Resposta incorreta 1";
+            }
+        }else if(blur.getAttribute("name") === `URL da imagem 1 ${i}`){
+            userQuizz.questions[i].answers[1]= {text: userQuizz.questions[i].answers[1].text, image: blur.value};
+            if(blur.value === ""){
+                blur.value = "URL da imagem 1";
+            }
+        }else if(blur.getAttribute("name") === `Resposta incorreta 2 ${i}`){
+            userQuizz.questions[i].answers[2]= {text: blur.value, image: userQuizz.questions[i].answers[2].image};
+            if(blur.value === ""){
+                blur.value = "Resposta incorreta 2";
+            }
+        }else if(blur.getAttribute("name") === `URL da imagem 2 ${i}`){
+            userQuizz.questions[i].answers[2]= {text: userQuizz.questions[i].answers[2].text, image: blur.value};
+            if(blur.value === ""){
+                blur.value = "URL da imagem 2";
+            }
+        }else if(blur.getAttribute("name") === `Resposta incorreta 3 ${i}`){
+            userQuizz.questions[i].answers[3]= {text: blur.value, image: userQuizz.questions[i].answers[3].image};
+            if(blur.value === ""){
+                blur.value = "Resposta incorreta 3";
+            }
+        }else if(blur.getAttribute("name") === `URL da imagem 3 ${i}`){
+            userQuizz.questions[i].answers[3]= {text: userQuizz.questions[i].answers[3].text, image: blur.value};
+            if(blur.value === ""){
+                blur.value = "URL da imagem 3";
+            }
+        }
     }
 }
 // -------------------------------------
