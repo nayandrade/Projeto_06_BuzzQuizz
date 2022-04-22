@@ -272,7 +272,7 @@ header > h1 {
     margin-bottom: 15px;
 }
 
-.correto {
+.respondido .true {
     color: #009c22;
 }
 
@@ -286,7 +286,7 @@ header > h1 {
     z-index: 1;
 }
 
-.errado {
+.respondido .false {
     color: #ec362d;
 }
 
