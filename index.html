@@ -19,10 +19,10 @@
     <div class="conteiner">
         <div class="quizz-create hidden">
             <p>Você não criou nenhum quizz ainda :(</p>
-            <button>Criar Quizz</button>
+            <button onclick="criarQuizz()">Criar Quizz</button>
         </div>
         <div class="all-quizzes ">
-            <div class="div-tittle"><h1>Seus Quizzes</h1><ion-icon class="add-quizz" name="add-circle"></ion-icon></div>
+            <div class="div-tittle"><h1>Seus Quizzes</h1><ion-icon onclick="criarQuizz()" class="add-quizz" name="add-circle"></ion-icon></div>
             <div class="quizzes-user">
                 <div class="quizz">
                     <img src="./css/images/download.jpeg" alt="Imagem Cumpade"/>
@@ -37,30 +37,8 @@
         <div class="all-quizzes">
             <h1>Todos os Quizzes</h1>
             <div class="quizzes">
-                <div class="quizz">
-                    <img src="./css/images/download.jpeg" alt="Imagem Cumpade"/>
-                    <p>Eiiitaaa Mainhaaa!! Esse Lorem ipsum é só na sacanageeem!! E que abundância meu irmão viuu!!</p>
-                </div>
-                <div class="quizz">
-                    <img src="./css/images/download.jpeg" alt="Imagem Cumpade"/>
-                    <p>Assim você vai matar o papai</p>
-                </div>
-                <div class="quizz">
-                    <img src="./css/images/download.jpeg" alt="Imagem Cumpade"/>
-                    <p>Só digo uma coisa, Domingo ela não vai! Danadaa!!</p>
-                </div>
-                <div class="quizz">
-                    <img src="./css/images/download.jpeg" alt="Imagem Cumpade"/>
-                    <p>minha odalisca, agora faz essa cobra coral subir!!!</p>
-                </div>
-                <div class="quizz">
-                    <img src="./css/images/download.jpeg" alt="Imagem Cumpade"/>
-                    <p>Pau que nasce torto, Nunca se endireita. Tchannn!! Tchannn!! </p>
-                </div>
-                <div class="quizz">
-                    <img src="./css/images/download.jpeg" alt="Imagem Cumpade"/>
-                    <p>Você usa o Lorem Ipsum tradicional? Sabe de nada inocente!! </p>
-                </div>
+               
+             
             </div>
         </div>
     </div>
@@ -98,12 +76,12 @@
         <div class="creator-page p1">
             <h1>Comece pelo começo</h1>
             <div class="creator-data">
-                <input type="text" value="Título do seu quizz"/>
-                <input type="text" value="Url da imagem do seu quizz"/>
-                <input type="text" value="Quantidade de perguntas do quizz"/>
-                <input type="text" value="Quantidade de níveis do quizz"/>
+                <input onfocus="getInputFocus(this)" onblur="getInputBlur(this)" type="text" name="Título do seu quizz" value="Título do seu quizz"/>
+                <input onfocus="getInputFocus(this)" onblur="getInputBlur(this)" type="text" name="Url da imagem do seu quizz" value="Url da imagem do seu quizz"/>
+                <input onfocus="getInputFocus(this)" onblur="getInputBlur(this)" type="text" name="Quantidade de perguntas do quizz" value="Quantidade de perguntas do quizz"/>
+                <input onfocus="getInputFocus(this)" onblur="getInputBlur(this)" type="text" name="Quantidade de níveis do quizz" value="Quantidade de níveis do quizz"/>
             </div>
-            <button class="botao-prosseguir">Prosseguir pra criar perguntas</button>
+            <button onclick="validacaoBasico()" class="botao-prosseguir">Prosseguir pra criar perguntas</button>
         </div>
         <div class="creator-page p2 hidden">
             <h1>Crie suas perguntas</h1>

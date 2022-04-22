@@ -1,13 +1,18 @@
 let todosQuizzes = [];
 let quizzSelecionado = {};
 
+let userQuizz = {image: "", levels: [], questions: [], title: ""};
+let tamPerguntas = 0;
+let tamNiveis = 0;
+
 buscarQuizzes();
 function buscarQuizzes() {
     let promise = axios.get(
         'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes'
     );
+    promise.then(verPromise);
     promise.then(carregarQuizzes);
-    promise.catch(tratarFalha);
+    //promise.catch(tratarFalha);
 }
 
 function carregarQuizzes(response) {
@@ -75,38 +80,58 @@ function renderizarQuizz() {
         </div>  
         `;
         let sequenciaRespostas = [];
-        let respostasEmbaralhadas = []        
+        let respostasEmbaralhadas = [];
 
         for (let j = 0; j < perguntas[i].answers.length; j++) {
-            
             console.log(j);
-            sequenciaRespostas.push(j);            
+            sequenciaRespostas.push(j);
             console.log(sequenciaRespostas);
         }
 
         shuffle(sequenciaRespostas);
         for (let k = 0; k < sequenciaRespostas.length; k++) {
             respostasEmbaralhadas.push(sequenciaRespostas[k]);
-
         }
         console.log(respostasEmbaralhadas);
 
         for (let k = 0; k < respostasEmbaralhadas.length; k++) {
             let id = `pergunta${i}`;
-            let resposta = respostasEmbaralhadas[k]
+            let resposta = respostasEmbaralhadas[k];
             document.getElementById(id).innerHTML += `
-                <div class="quizz-pergunta-resposta" onclick="escolherResposta(this)">
+                <div class="quizz-pergunta-resposta ${perguntas[i].answers[resposta].isCorrectAnswer}" onclick="escolherResposta(this)">
+                    <div class="hidden opacidade"></div>
                     <img src="${perguntas[i].answers[resposta].image}" alt="">
                     <span class="quizz-resposta">${perguntas[i].answers[resposta].text}</span>
                 </div>
             `;
-        }       
+        }
     }
 }
+function escolherResposta(elemento) {
+    let perguntaRespondida = elemento.parentNode   
+    
+    if (perguntaRespondida.classList.contains('respondido') === false) {
+        let valor = elemento.classList.contains('true');
 
-/* function escolherResposta(elemento) {
+        console.log(elemento);
+        let bolinha = `#${elemento.parentNode.id}`;
+        console.log(bolinha);
 
-}*/
+        if (valor === true) {
+            console.log('resposta correta');
+        } else {
+            console.log('resposta errada');
+        }
+        console.log(valor);
+
+        perguntaRespondida.classList.add('respondido');
+        let perguntaContaner = perguntaRespondida.parentNode
+        perguntaContaner.classList.add('respondida')
+        perguntaContaner.nextElementSibling.scrollIntoView()
+    }
+
+    
+}
 
 function shuffle(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -116,3 +141,69 @@ function shuffle(array) {
 }
 
 
+// ------------- tela 3 ----------------
+function verPromise(p){
+    console.log(p);
+}
+
+function criarQuizz(){
+    document.querySelector(".conteiner").classList.add("hidden");
+    document.querySelector(".quizz-creator").classList.remove("hidden");
+}
+
+function getInputFocus(focus){
+    //focus.removeAttribute("value");
+    focus.value = "";
+}
+
+function getInputBlur(blur){
+    if(blur.getAttribute("name") === "Título do seu quizz"){
+        //blur.setAttribute("value", "Título do seu quizz");
+        userQuizz.title = blur.value;
+        if(blur.value === ""){
+            blur.value = "Título do seu quizz";
+        }
+    }else if(blur.getAttribute("name") === "Url da imagem do seu quizz"){
+        //blur.setAttribute("value", "Url da imagem do seu quizz");
+        userQuizz.image = blur.value;
+        if(blur.value === ""){
+            blur.value = "Url da imagem do seu quizz";
+        }
+    }else if(blur.getAttribute("name") === "Quantidade de perguntas do quizz"){
+        //blur.setAttribute("value", "Quantidade de perguntas do quizz");
+        if(isNaN(Number(blur.value))){
+            alert("Cara, digite um número");
+        }else{
+            tamPerguntas = Number(blur.value);
+        }
+        if(blur.value === ""){
+            blur.value = "Quantidade de perguntas do quizz";
+        }
+    }else if(blur.getAttribute("name") === "Quantidade de níveis do quizz"){
+        //blur.setAttribute("value", "Quantidade de níveis do quizz");
+        if(isNaN(Number(blur.value))){
+            alert("Cara, digite um número");
+        }else{
+            tamNiveis = Number(blur.value);
+        }
+        if(blur.value === ""){
+            blur.value = "Quantidade de níveis do quizz";
+        }
+    }
+}
+
+function validacaoBasico(){
+    if(userQuizz.title.length < 20 || userQuizz.title.length > 65){
+        return alert("título inválido");
+    }else if(!userQuizz.image.startsWith("https://") && !userQuizz.image.startsWith("http://")){
+        return alert("imagem inválida");
+    }else if(tamPerguntas < 3){
+        return alert("Quantidade de perguntas insuficiente");
+    }else if(tamNiveis < 2){
+        return alert("Quantidade de níveis insuficiente");
+    }else{
+        document.querySelector(".creator-page.p1").classList.add("hidden");
+        document.querySelector(".creator-page.p2").classList.remove("hidden");
+    }
+}
+// -------------------------------------
