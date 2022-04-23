@@ -189,7 +189,7 @@ header > h1 {
 .quizz-finalizar {
     background-color: #ffffff;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.05);
-    width: 759px;
+    width: 723px;
     padding: 18px;
     display: flex;
     align-items: center;
@@ -239,6 +239,7 @@ header > h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 16px;
 }
 
 .quizz-voltar {
@@ -251,6 +252,7 @@ header > h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 85px;
 }
 
 /*fim da tela 1*/
@@ -302,7 +304,7 @@ header > h1 {
 .quizz-perguntas {
     background-color: #ffffff;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.05);
-    width: 759px;
+    width: 687px;
     height: auto;
     padding: 36px;
     margin-bottom: 42px;
@@ -340,13 +342,17 @@ header > h1 {
     height: 52%;
     cursor: pointer;
     position: relative;
+    padding: 5px 0;
+    
 }
 
 .quizz-pergunta-resposta img {
     width: 100%;
-    height: 75%;
+    height: 175px;
     margin-bottom: 15px;
 }
+
+
 
 .respondido .true {
     color: #009c22;
