@@ -3,8 +3,9 @@ let quizzSelecionado = {};
 const TEMPO2S = 2 * 1000;
 let respostasCorretas = 0;
 let respostasRespondidas = 0;
+let nivel = 0;
 
-let userQuizz = {image: "", levels: [], questions: [], title: ""};
+let userQuizz = { image: '', levels: [], questions: [], title: '' };
 let arrayImg = [];
 let tamPerguntas = 0;
 let tamNiveis = 0;
@@ -41,17 +42,12 @@ function renderizarQuizzes() {
 
 function escolherQuizz(element) {
     let bolinha2 = document.querySelector('.conteiner').classList.add('hidden');
-    let bolinha = document
+    let mostrarQuizz = document
         .querySelector('.quizz-page')
         .classList.remove('hidden');
     let quizzID = element.querySelector('p').innerHTML.trim();
-    console.log(bolinha);
-    console.log(bolinha2);
-    console.log(element);
     console.log(quizzID);
-    const index = todosQuizzes.findIndex(
-        (element) => element.title === quizzID
-    );
+    let index = todosQuizzes.findIndex((element) => element.title === quizzID);
     console.log(index);
     quizzSelecionado = todosQuizzes[index];
     console.log(quizzSelecionado);
@@ -112,6 +108,7 @@ function renderizarQuizz() {
     }
 }
 function escolherResposta(elemento) {
+    let perguntas = quizzSelecionado.questions;
     let perguntaRespondida = elemento.parentNode;
 
     if (perguntaRespondida.classList.contains('respondido') === false) {
@@ -147,12 +144,61 @@ function escolherResposta(elemento) {
                 transparente.firstElementChild.classList.remove('hidden');
             }
         }
-        console.log(todasRespostas.length);
-        scrollParaElemento(perguntaContaner.nextElementSibling);
-        console.log(respostasCorretas);
-        console.log(respostasRespondidas);
-        console.log(respostasCorretas / respostasRespondidas);
+
+        if (respostasRespondidas === perguntas.length) {
+            console.log('acabou o quizz');
+            console.log(`respostasCorretas ${respostasCorretas}`);
+            console.log(`respostasRespondidas ${respostasRespondidas}`);
+            nivel = (respostasCorretas / respostasRespondidas) * 100;
+            console.log(`nivel ${nivel}`);
+            document.querySelector('.quizz-page').innerHTML += `
+            <div class="quizz-finalizar"></div>
+            `
+            finalizarQuizz();
+        } else {
+            console.log(todasRespostas);
+            console.log(todasRespostas.length);
+            scrollParaElemento(perguntaContaner.nextElementSibling);
+        }
     }
+}
+
+function finalizarQuizz() {
+    let niveis = quizzSelecionado.levels;
+    let nivelFinal = 0
+    console.log(nivelFinal);
+
+    // while (Math.round(nivel) < niveis[i].minValue)
+
+    for (let i = 0; i < niveis.length; i++) {
+        if (niveis[i].minValue <= Math.round(nivel) && niveis[i].minValue >= nivelFinal) {
+            nivelFinal = niveis[i].minValue    
+        }
+    }
+    console.log(nivelFinal)
+
+    for (let j = 0; j < niveis.length; j++) {
+        if (niveis[j].minValue === nivelFinal) {
+            document.querySelector('.quizz-finalizar').innerHTML = `  
+                <div class="quizz-finalizar-titulo">
+                    <h3 class="white">${niveis[j].title}</h3>
+                </div>
+                <div class="quizz-nivel">                         
+                    <img src="${niveis[j].image}" alt="">
+                    <p class="">${niveis[j].text}</p>                                  
+                </div>                    
+                `;
+            
+            document.querySelector('.quizz-page').innerHTML += `
+                <div class="quizz-reiniciar">Reiniciar Quizz</div>   
+                <div class="quizz-voltar">Voltar pra home</div> 
+            `
+            break;
+        }
+    }
+    let quizzPage = document.querySelector('.quizz-page')
+    scrollParaElemento(quizzPage.lastElementChild);
+    console.log(nivelFinal);
 }
 
 function shuffle(array) {
@@ -168,104 +214,122 @@ function scrollParaElemento(elemento) {
     }, TEMPO2S);
 }
 
-
 // ------------- tela 3 ----------------
-function verPromise(p){
+function verPromise(p) {
     console.log(p);
 }
 
-function criarQuizz(){
-    document.querySelector(".conteiner").classList.add("hidden");
-    document.querySelector(".quizz-creator").classList.remove("hidden");
+function criarQuizz() {
+    document.querySelector('.conteiner').classList.add('hidden');
+    document.querySelector('.quizz-creator').classList.remove('hidden');
 }
 
-function getInputFocus(focus){
-    focus.value = "";
+function getInputFocus(focus) {
+    focus.value = '';
 }
 
-function getInputBlur(blur){
-    if(blur.getAttribute("name") === "Título do seu quizz"){
+function getInputBlur(blur) {
+    if (blur.getAttribute('name') === 'Título do seu quizz') {
         userQuizz.title = blur.value;
-        if(blur.value === ""){
-            blur.value = "Título do seu quizz";
+        if (blur.value === '') {
+            blur.value = 'Título do seu quizz';
         }
-    }else if(blur.getAttribute("name") === "Url da imagem do seu quizz"){
+    } else if (blur.getAttribute('name') === 'Url da imagem do seu quizz') {
         userQuizz.image = blur.value;
-        if(blur.value === ""){
-            blur.value = "Url da imagem do seu quizz";
+        if (blur.value === '') {
+            blur.value = 'Url da imagem do seu quizz';
         }
-    }else if(blur.getAttribute("name") === "Quantidade de perguntas do quizz"){
-        if(isNaN(Number(blur.value))){
-            alert("Cara, digite um número");
-        }else{
+    } else if (
+        blur.getAttribute('name') === 'Quantidade de perguntas do quizz'
+    ) {
+        if (isNaN(Number(blur.value))) {
+            alert('Cara, digite um número');
+        } else {
             tamPerguntas = Number(blur.value);
         }
-        if(blur.value === ""){
-            blur.value = "Quantidade de perguntas do quizz";
+        if (blur.value === '') {
+            blur.value = 'Quantidade de perguntas do quizz';
         }
-    }else if(blur.getAttribute("name") === "Quantidade de níveis do quizz"){
-        if(isNaN(Number(blur.value))){
-            alert("Cara, digite um número");
-        }else{
+    } else if (blur.getAttribute('name') === 'Quantidade de níveis do quizz') {
+        if (isNaN(Number(blur.value))) {
+            alert('Cara, digite um número');
+        } else {
             tamNiveis = Number(blur.value);
         }
-        if(blur.value === ""){
-            blur.value = "Quantidade de níveis do quizz";
+        if (blur.value === '') {
+            blur.value = 'Quantidade de níveis do quizz';
         }
     }
 }
 
-function validacaoBasico(){
-    if(userQuizz.title.length < 20 || userQuizz.title.length > 65){
-        return alert("título inválido");
-    }else if(tamPerguntas < 3){
-        return alert("Quantidade de perguntas insuficiente");
-    }else if(tamNiveis < 2){
-        return alert("Quantidade de níveis insuficiente");
-    }else{
+function validacaoBasico() {
+    if (userQuizz.title.length < 20 || userQuizz.title.length > 65) {
+        return alert('título inválido');
+    } else if (tamPerguntas < 3) {
+        return alert('Quantidade de perguntas insuficiente');
+    } else if (tamNiveis < 2) {
+        return alert('Quantidade de níveis insuficiente');
+    } else {
         validaimg(userQuizz.image);
     }
 }
 
 function validaimg(file) {
-	let img = new Image();
-	img.src = file;
+    let img = new Image();
+    img.src = file;
 
-    document.querySelector(".creator-page.p1 button").innerHTML = "Aguarde...";
-    document.querySelector(".creator-page.p1 button").removeAttribute("onclick");
+    document.querySelector('.creator-page.p1 button').innerHTML = 'Aguarde...';
+    document
+        .querySelector('.creator-page.p1 button')
+        .removeAttribute('onclick');
 
-	img.onload = function() {
-		document.querySelector(".creator-page.p1").classList.add("hidden");
-        document.querySelector(".creator-page.p2").classList.remove("hidden");
-        document.querySelector(".creator-page.p1 button").innerHTML = "Prosseguir pra criar perguntas";
-        document.querySelector(".creator-page.p1 button").setAttribute("onclick", "validacaoBasico()");
+    img.onload = function () {
+        document.querySelector('.creator-page.p1').classList.add('hidden');
+        document.querySelector('.creator-page.p2').classList.remove('hidden');
+        document.querySelector('.creator-page.p1 button').innerHTML =
+            'Prosseguir pra criar perguntas';
+        document
+            .querySelector('.creator-page.p1 button')
+            .setAttribute('onclick', 'validacaoBasico()');
         criarPerquntas(tamPerguntas);
         criarNiveis(tamNiveis);
-        const arrPerguntas = {title: "", color: "", answers: [{text: "", image: ""},{text: "", image: ""},{text: "", image: ""},{text: "", image: ""}]};
-        const arrNiveis = {title: "", image: "", text: "", minValue: -1};
-        for(let i=0; i<tamPerguntas; i++){
+        const arrPerguntas = {
+            title: '',
+            color: '',
+            answers: [
+                { text: '', image: '' },
+                { text: '', image: '' },
+                { text: '', image: '' },
+                { text: '', image: '' },
+            ],
+        };
+        const arrNiveis = { title: '', image: '', text: '', minValue: -1 };
+        for (let i = 0; i < tamPerguntas; i++) {
             userQuizz.questions[i] = arrPerguntas;
         }
-        for(let j=0; j<tamNiveis; j++){
+        for (let j = 0; j < tamNiveis; j++) {
             userQuizz.levels[j] = arrNiveis;
         }
-	}
-	img.onerror = function() {
-		alert("imagem inválida");
-        document.querySelector(".creator-page.p1 button").innerHTML = "Prosseguir pra criar perguntas";
-        document.querySelector(".creator-page.p1 button").setAttribute("onclick", "validacaoBasico()");
-	}
+    };
+    img.onerror = function () {
+        alert('imagem inválida');
+        document.querySelector('.creator-page.p1 button').innerHTML =
+            'Prosseguir pra criar perguntas';
+        document
+            .querySelector('.creator-page.p1 button')
+            .setAttribute('onclick', 'validacaoBasico()');
+    };
 }
 
-function criarPerquntas(pergunta){
-    const page32 = document.querySelector(".creator-page.p2");
-    for(let i=1; i<pergunta; i++){
-        page32.innerHTML += `   <div class="fechado p${i+1}">
-                                    <h1>Pergunta ${i+1}</h1>
+function criarPerquntas(pergunta) {
+    const page32 = document.querySelector('.creator-page.p2');
+    for (let i = 1; i < pergunta; i++) {
+        page32.innerHTML += `   <div class="fechado p${i + 1}">
+                                    <h1>Pergunta ${i + 1}</h1>
                                     <ion-icon onclick="abrirPergunta(this)" name="create-outline"></ion-icon>
                                 </div>
-                                <div class="pergunta p${i+1} hidden">
-                                    <h1>Pergunta ${i+1}</h1>
+                                <div class="pergunta p${i + 1} hidden">
+                                    <h1>Pergunta ${i + 1}</h1>
                                     <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Texto da pergunta ${i}" value="Texto da pergunta"/>
                                     <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Cor de fundo da pergunta ${i}" value="Cor de fundo da pergunta"/>
                                     <h1>Resposta correta</h1>
@@ -286,171 +350,237 @@ function criarPerquntas(pergunta){
     page32.innerHTML += `<button onclick="validacaoPerguntas()" class="botao-prosseguir">Prosseguir pra criar níveis</button>`;
 }
 
-function getInputBlurPerg(blur){
-    for(let i=0; i<userQuizz.questions.length; i++){
-        if(blur.getAttribute("name") === `Texto da pergunta ${i}`){
-            userQuizz.questions[i]= {title: blur.value, color: userQuizz.questions[i].color, answers: [userQuizz.questions[i].answers[0], userQuizz.questions[i].answers[1], userQuizz.questions[i].answers[2], userQuizz.questions[i].answers[3]]};
-            if(blur.value === ""){
-                blur.value = "Texto da pergunta";
+function getInputBlurPerg(blur) {
+    for (let i = 0; i < userQuizz.questions.length; i++) {
+        if (blur.getAttribute('name') === `Texto da pergunta ${i}`) {
+            userQuizz.questions[i] = {
+                title: blur.value,
+                color: userQuizz.questions[i].color,
+                answers: [
+                    userQuizz.questions[i].answers[0],
+                    userQuizz.questions[i].answers[1],
+                    userQuizz.questions[i].answers[2],
+                    userQuizz.questions[i].answers[3],
+                ],
+            };
+            if (blur.value === '') {
+                blur.value = 'Texto da pergunta';
             }
-        }else if(blur.getAttribute("name") === `Cor de fundo da pergunta ${i}`){
-            userQuizz.questions[i]= {title: userQuizz.questions[i].title, color: blur.value, answers: [userQuizz.questions[i].answers[0], userQuizz.questions[i].answers[1], userQuizz.questions[i].answers[2], userQuizz.questions[i].answers[3]]};
-            if(blur.value === ""){
-                blur.value = "Cor de fundo da pergunta";
+        } else if (
+            blur.getAttribute('name') === `Cor de fundo da pergunta ${i}`
+        ) {
+            userQuizz.questions[i] = {
+                title: userQuizz.questions[i].title,
+                color: blur.value,
+                answers: [
+                    userQuizz.questions[i].answers[0],
+                    userQuizz.questions[i].answers[1],
+                    userQuizz.questions[i].answers[2],
+                    userQuizz.questions[i].answers[3],
+                ],
+            };
+            if (blur.value === '') {
+                blur.value = 'Cor de fundo da pergunta';
             }
-        }else if(blur.getAttribute("name") === `Resposta correta ${i}`){
-            userQuizz.questions[i].answers[0]= {text: blur.value, image: userQuizz.questions[i].answers[0].image, isCorrectAnswer: true};
-            if(blur.value === ""){
-                blur.value = "Resposta correta";
+        } else if (blur.getAttribute('name') === `Resposta correta ${i}`) {
+            userQuizz.questions[i].answers[0] = {
+                text: blur.value,
+                image: userQuizz.questions[i].answers[0].image,
+                isCorrectAnswer: true,
+            };
+            if (blur.value === '') {
+                blur.value = 'Resposta correta';
             }
-        }else if(blur.getAttribute("name") === `URL da imagem ${i}`){
-            userQuizz.questions[i].answers[0]= {text: userQuizz.questions[i].answers[0].text, image: blur.value, isCorrectAnswer: true};
+        } else if (blur.getAttribute('name') === `URL da imagem ${i}`) {
+            userQuizz.questions[i].answers[0] = {
+                text: userQuizz.questions[i].answers[0].text,
+                image: blur.value,
+                isCorrectAnswer: true,
+            };
             validaimgPer(blur.value);
-            if(blur.value === ""){
-                blur.value = "URL da imagem";
+            if (blur.value === '') {
+                blur.value = 'URL da imagem';
             }
-        }else if(blur.getAttribute("name") === `Resposta incorreta 1 ${i}`){
-            userQuizz.questions[i].answers[1]= {text: blur.value, image: userQuizz.questions[i].answers[1].image, isCorrectAnswer: false};
-            if(blur.value === ""){
-                blur.value = "Resposta incorreta 1";
+        } else if (blur.getAttribute('name') === `Resposta incorreta 1 ${i}`) {
+            userQuizz.questions[i].answers[1] = {
+                text: blur.value,
+                image: userQuizz.questions[i].answers[1].image,
+                isCorrectAnswer: false,
+            };
+            if (blur.value === '') {
+                blur.value = 'Resposta incorreta 1';
             }
-        }else if(blur.getAttribute("name") === `URL da imagem 1 ${i}`){
-            userQuizz.questions[i].answers[1]= {text: userQuizz.questions[i].answers[1].text, image: blur.value, isCorrectAnswer: false};
+        } else if (blur.getAttribute('name') === `URL da imagem 1 ${i}`) {
+            userQuizz.questions[i].answers[1] = {
+                text: userQuizz.questions[i].answers[1].text,
+                image: blur.value,
+                isCorrectAnswer: false,
+            };
             validaimgPer(blur.value);
-            if(blur.value === ""){
-                blur.value = "URL da imagem 1";
+            if (blur.value === '') {
+                blur.value = 'URL da imagem 1';
             }
-        }else if(blur.getAttribute("name") === `Resposta incorreta 2 ${i}`){
-            userQuizz.questions[i].answers[2]= {text: blur.value, image: userQuizz.questions[i].answers[2].image, isCorrectAnswer: false};
-            if(blur.value === ""){
-                blur.value = "Resposta incorreta 2";
+        } else if (blur.getAttribute('name') === `Resposta incorreta 2 ${i}`) {
+            userQuizz.questions[i].answers[2] = {
+                text: blur.value,
+                image: userQuizz.questions[i].answers[2].image,
+                isCorrectAnswer: false,
+            };
+            if (blur.value === '') {
+                blur.value = 'Resposta incorreta 2';
             }
-        }else if(blur.getAttribute("name") === `URL da imagem 2 ${i}`){
-            userQuizz.questions[i].answers[2]= {text: userQuizz.questions[i].answers[2].text, image: blur.value, isCorrectAnswer: false};
+        } else if (blur.getAttribute('name') === `URL da imagem 2 ${i}`) {
+            userQuizz.questions[i].answers[2] = {
+                text: userQuizz.questions[i].answers[2].text,
+                image: blur.value,
+                isCorrectAnswer: false,
+            };
             validaimgPer(blur.value);
-            if(blur.value === ""){
-                blur.value = "URL da imagem 2";
+            if (blur.value === '') {
+                blur.value = 'URL da imagem 2';
             }
-        }else if(blur.getAttribute("name") === `Resposta incorreta 3 ${i}`){
-            userQuizz.questions[i].answers[3]= {text: blur.value, image: userQuizz.questions[i].answers[3].image, isCorrectAnswer: false};
-            if(blur.value === ""){
-                blur.value = "Resposta incorreta 3";
+        } else if (blur.getAttribute('name') === `Resposta incorreta 3 ${i}`) {
+            userQuizz.questions[i].answers[3] = {
+                text: blur.value,
+                image: userQuizz.questions[i].answers[3].image,
+                isCorrectAnswer: false,
+            };
+            if (blur.value === '') {
+                blur.value = 'Resposta incorreta 3';
             }
-        }else if(blur.getAttribute("name") === `URL da imagem 3 ${i}`){
-            userQuizz.questions[i].answers[3]= {text: userQuizz.questions[i].answers[3].text, image: blur.value, isCorrectAnswer: false};
+        } else if (blur.getAttribute('name') === `URL da imagem 3 ${i}`) {
+            userQuizz.questions[i].answers[3] = {
+                text: userQuizz.questions[i].answers[3].text,
+                image: blur.value,
+                isCorrectAnswer: false,
+            };
             validaimgPer(blur.value);
-            if(blur.value === ""){
-                blur.value = "URL da imagem 3";
+            if (blur.value === '') {
+                blur.value = 'URL da imagem 3';
             }
         }
     }
 }
 
-function validaimgPer(file){
+function validaimgPer(file) {
     let img = new Image();
     img.src = file;
 
-    document.querySelector(".creator-page.p2 button").innerHTML = "Aguarde...";
-    document.querySelector(".creator-page.p2 button").removeAttribute("onclick");
+    document.querySelector('.creator-page.p2 button').innerHTML = 'Aguarde...';
+    document
+        .querySelector('.creator-page.p2 button')
+        .removeAttribute('onclick');
 
-    img.onload = function(){
-        document.querySelector(".creator-page.p2 button").innerHTML = "Prosseguir pra criar níveis";
-        document.querySelector(".creator-page.p2 button").setAttribute("onclick", "validacaoPerguntas()");
-    }
-    img.onerror = function(){
-        if(file === ""){
-            document.querySelector(".creator-page.p2 button").innerHTML = "Prosseguir pra criar níveis";
-            document.querySelector(".creator-page.p2 button").setAttribute("onclick", "validacaoPerguntas()"); 
-        }else{
-            return alert("Imagem inválida");
+    img.onload = function () {
+        document.querySelector('.creator-page.p2 button').innerHTML =
+            'Prosseguir pra criar níveis';
+        document
+            .querySelector('.creator-page.p2 button')
+            .setAttribute('onclick', 'validacaoPerguntas()');
+    };
+    img.onerror = function () {
+        if (file === '') {
+            document.querySelector('.creator-page.p2 button').innerHTML =
+                'Prosseguir pra criar níveis';
+            document
+                .querySelector('.creator-page.p2 button')
+                .setAttribute('onclick', 'validacaoPerguntas()');
+        } else {
+            return alert('Imagem inválida');
+        }
+    };
+}
+
+function abrirPergunta(item) {
+    for (let p = 0; p < userQuizz.questions.length; p++) {
+        document.querySelector(`.fechado.p${p + 1}`).classList.remove('hidden');
+        document.querySelector(`.pergunta.p${p + 1}`).classList.add('hidden');
+        if (item.parentNode.classList.contains(`p${p + 1}`)) {
+            item.parentNode.classList.add('hidden');
+            document
+                .querySelector(`.pergunta.p${p + 1}`)
+                .classList.remove('hidden');
+            document.querySelector(`.pergunta.p${p + 1}`).scrollIntoView();
         }
     }
 }
 
-function abrirPergunta(item){
-    for(let p=0; p<userQuizz.questions.length; p++){
-        document.querySelector(`.fechado.p${p+1}`).classList.remove("hidden");
-        document.querySelector(`.pergunta.p${p+1}`).classList.add("hidden");
-        if(item.parentNode.classList.contains(`p${p+1}`)){
-            item.parentNode.classList.add("hidden");
-            document.querySelector(`.pergunta.p${p+1}`).classList.remove("hidden");
-            document.querySelector(`.pergunta.p${p+1}`).scrollIntoView();
-        }
-    }
-}
-
-function validacaoPerguntas(){
+function validacaoPerguntas() {
     let respostaErrada = -1;
 
-    for(let k=0; k<userQuizz.questions.length; k++){
-        respostaErrada = validarRespostaIncorreta(userQuizz.questions[k].answers);
-        if(userQuizz.questions[k].title.length < 20){
-            return alert("Nome da pergunta inválido");
-        }else if(validarNaoCor(userQuizz.questions[k].color)){
-            return alert("Cor inválida");
-        }else if(userQuizz.questions[k].answers[0].text === ""){
-            return alert("Crie uma resposta correta");
-        }else if(userQuizz.questions[k].answers[0].image === ""){
-            return alert("Insira uma imagem correta");
+    for (let k = 0; k < userQuizz.questions.length; k++) {
+        respostaErrada = validarRespostaIncorreta(
+            userQuizz.questions[k].answers
+        );
+        if (userQuizz.questions[k].title.length < 20) {
+            return alert('Nome da pergunta inválido');
+        } else if (validarNaoCor(userQuizz.questions[k].color)) {
+            return alert('Cor inválida');
+        } else if (userQuizz.questions[k].answers[0].text === '') {
+            return alert('Crie uma resposta correta');
+        } else if (userQuizz.questions[k].answers[0].image === '') {
+            return alert('Insira uma imagem correta');
         }
-        if(respostaErrada === 0){
-            return alert("Insira uma resposta incorreta para imagem");
-        }else if(respostaErrada === 1){
-            return alert("Insira no mínimo uma resposta incorreta");
-        }else if(respostaErrada === 2){
-            return alert("Insira uma imagem para resposta");
+        if (respostaErrada === 0) {
+            return alert('Insira uma resposta incorreta para imagem');
+        } else if (respostaErrada === 1) {
+            return alert('Insira no mínimo uma resposta incorreta');
+        } else if (respostaErrada === 2) {
+            return alert('Insira uma imagem para resposta');
         }
     }
-    document.querySelector(".creator-page.p2").classList.add("hidden");
-    document.querySelector(".creator-page.p3").classList.remove("hidden");
+    document.querySelector('.creator-page.p2').classList.add('hidden');
+    document.querySelector('.creator-page.p3').classList.remove('hidden');
 }
 
-function validarRespostaIncorreta(respostaIncorreta){
+function validarRespostaIncorreta(respostaIncorreta) {
     let cont = 0;
 
-    for(let r=1; r<4; r++){
-        if(respostaIncorreta[r].text === ""){
-            if(respostaIncorreta[r].image != ""){
+    for (let r = 1; r < 4; r++) {
+        if (respostaIncorreta[r].text === '') {
+            if (respostaIncorreta[r].image != '') {
                 return 0;
-            }else{
+            } else {
                 cont++;
-                if(cont > 2){
+                if (cont > 2) {
                     return 1;
-                }   
+                }
             }
-        }else if(respostaIncorreta[r].text != ""){
-            if(respostaIncorreta[r].image === ""){
+        } else if (respostaIncorreta[r].text != '') {
+            if (respostaIncorreta[r].image === '') {
                 return 2;
-            }  
-        }  
+            }
+        }
     }
 }
 
-function validarNaoCor(color){
+function validarNaoCor(color) {
     color.toLowerCase();
-    let caracteres = "ghijklmnopqrstuvwxyz*/?:.,;$%@!&()_-+=";
-    for(let c=0; c<caracteres.length; c++){
-        if(color.indexOf(caracteres[c]) != -1){
+    let caracteres = 'ghijklmnopqrstuvwxyz*/?:.,;$%@!&()_-+=';
+    for (let c = 0; c < caracteres.length; c++) {
+        if (color.indexOf(caracteres[c]) != -1) {
             return true;
         }
     }
-    if(color.length != 7){
+    if (color.length != 7) {
         return true;
-    }else if(!color.startsWith("#")){
+    } else if (!color.startsWith('#')) {
         return true;
     }
     return false;
 }
 
-function criarNiveis(nivel){
-    let page33 = document.querySelector(".creator-page.p3");
-    for(let n=1; n<nivel; n++){
-        page33.innerHTML += `  <div class="fechado n${n+1}">
-                                    <h1>Nível ${n+1}</h1>
+function criarNiveis(nivel) {
+    let page33 = document.querySelector('.creator-page.p3');
+    for (let n = 1; n < nivel; n++) {
+        page33.innerHTML += `  <div class="fechado n${n + 1}">
+                                    <h1>Nível ${n + 1}</h1>
                                     <ion-icon onclick="abrirNivel(this)" name="create-outline"></ion-icon>
                                 </div>
-                                <div class="creator-data nivel n${n+1} hidden">
-                                    <h1>Nível ${n+1}</h1>
+                                <div class="creator-data nivel n${
+                                    n + 1
+                                } hidden">
+                                    <h1>Nível ${n + 1}</h1>
                                     <input type="text" placeholder="Título do nível" value=""/>
                                     <input type="text" placeholder="% de acerto mínima" value=""/>
                                     <input type="text" placeholder="URL da imagem do nível" value=""/>
@@ -461,14 +591,20 @@ function criarNiveis(nivel){
     page33.innerHTML += `<button class="botao-prosseguir">Finalizar Quizz</button>`;
 }
 
-function abrirNivel(item){
-    for(let n=0; n<userQuizz.levels.length; n++){
-        document.querySelector(`.fechado.n${n+1}`).classList.remove("hidden");
-        document.querySelector(`.creator-data.nivel.n${n+1}`).classList.add("hidden");
-        if(item.parentNode.classList.contains(`n${n+1}`)){
-            item.parentNode.classList.add("hidden");
-            document.querySelector(`.creator-data.nivel.n${n+1}`).classList.remove("hidden");
-            document.querySelector(`.creator-data.nivel.n${n+1}`).scrollIntoView();
+function abrirNivel(item) {
+    for (let n = 0; n < userQuizz.levels.length; n++) {
+        document.querySelector(`.fechado.n${n + 1}`).classList.remove('hidden');
+        document
+            .querySelector(`.creator-data.nivel.n${n + 1}`)
+            .classList.add('hidden');
+        if (item.parentNode.classList.contains(`n${n + 1}`)) {
+            item.parentNode.classList.add('hidden');
+            document
+                .querySelector(`.creator-data.nivel.n${n + 1}`)
+                .classList.remove('hidden');
+            document
+                .querySelector(`.creator-data.nivel.n${n + 1}`)
+                .scrollIntoView();
         }
     }
 }
