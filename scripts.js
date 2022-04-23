@@ -240,6 +240,7 @@ function validaimg(file) {
         document.querySelector(".creator-page.p1 button").innerHTML = "Prosseguir pra criar perguntas";
         document.querySelector(".creator-page.p1 button").setAttribute("onclick", "validacaoBasico()");
         criarPerquntas(tamPerguntas);
+        criarNiveis(tamNiveis);
         const arrPerguntas = {title: "", color: "", answers: [{text: "", image: ""},{text: "", image: ""},{text: "", image: ""},{text: "", image: ""}]};
         const arrNiveis = {title: "", image: "", text: "", minValue: -1};
         for(let i=0; i<tamPerguntas; i++){
@@ -353,19 +354,17 @@ function validaimgPer(file){
     document.querySelector(".creator-page.p2 button").removeAttribute("onclick");
 
     img.onload = function(){
-        document.querySelector(".creator-page.p2 button").innerHTML = "Prosseguir pra criar perguntas";
+        document.querySelector(".creator-page.p2 button").innerHTML = "Prosseguir pra criar níveis";
         document.querySelector(".creator-page.p2 button").setAttribute("onclick", "validacaoPerguntas()");
     }
     img.onerror = function(){
         if(file === ""){
-            document.querySelector(".creator-page.p2 button").innerHTML = "Prosseguir pra criar perguntas";
+            document.querySelector(".creator-page.p2 button").innerHTML = "Prosseguir pra criar níveis";
             document.querySelector(".creator-page.p2 button").setAttribute("onclick", "validacaoPerguntas()"); 
         }else{
             return alert("Imagem inválida");
         }
     }
-    //document.querySelector(".creator-page.p2").classList.add("hidden");
-    //document.querySelector(".creator-page.p3").classList.remove("hidden");
 }
 
 function abrirPergunta(item){
@@ -375,6 +374,7 @@ function abrirPergunta(item){
         if(item.parentNode.classList.contains(`p${p+1}`)){
             item.parentNode.classList.add("hidden");
             document.querySelector(`.pergunta.p${p+1}`).classList.remove("hidden");
+            document.querySelector(`.pergunta.p${p+1}`).scrollIntoView();
         }
     }
 }
@@ -440,5 +440,36 @@ function validarNaoCor(color){
         return true;
     }
     return false;
+}
+
+function criarNiveis(nivel){
+    let page33 = document.querySelector(".creator-page.p3");
+    for(let n=1; n<nivel; n++){
+        page33.innerHTML += `  <div class="fechado n${n+1}">
+                                    <h1>Nível ${n+1}</h1>
+                                    <ion-icon onclick="abrirNivel(this)" name="create-outline"></ion-icon>
+                                </div>
+                                <div class="creator-data nivel n${n+1} hidden">
+                                    <h1>Nível ${n+1}</h1>
+                                    <input type="text" placeholder="Título do nível" value=""/>
+                                    <input type="text" placeholder="% de acerto mínima" value=""/>
+                                    <input type="text" placeholder="URL da imagem do nível" value=""/>
+                                    <input type="text" placeholder="Descrição do nível" value=""/>
+                                </div>
+        `;
+    }
+    page33.innerHTML += `<button class="botao-prosseguir">Finalizar Quizz</button>`;
+}
+
+function abrirNivel(item){
+    for(let n=0; n<userQuizz.levels.length; n++){
+        document.querySelector(`.fechado.n${n+1}`).classList.remove("hidden");
+        document.querySelector(`.creator-data.nivel.n${n+1}`).classList.add("hidden");
+        if(item.parentNode.classList.contains(`n${n+1}`)){
+            item.parentNode.classList.add("hidden");
+            document.querySelector(`.creator-data.nivel.n${n+1}`).classList.remove("hidden");
+            document.querySelector(`.creator-data.nivel.n${n+1}`).scrollIntoView();
+        }
+    }
 }
 // -------------------------------------
