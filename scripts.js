@@ -5,6 +5,7 @@ let respostasCorretas = 0;
 let respostasRespondidas = 0;
 
 let userQuizz = {image: "", levels: [], questions: [], title: ""};
+let arrayImg = [];
 let tamPerguntas = 0;
 let tamNiveis = 0;
 
@@ -217,15 +218,27 @@ function getInputBlur(blur){
 function validacaoBasico(){
     if(userQuizz.title.length < 20 || userQuizz.title.length > 65){
         return alert("título inválido");
-    }else if(!userQuizz.image.startsWith("https://") && !userQuizz.image.startsWith("http://")){
-        return alert("imagem inválida");
     }else if(tamPerguntas < 3){
         return alert("Quantidade de perguntas insuficiente");
     }else if(tamNiveis < 2){
         return alert("Quantidade de níveis insuficiente");
     }else{
-        document.querySelector(".creator-page.p1").classList.add("hidden");
+        validaimg(userQuizz.image);
+    }
+}
+
+function validaimg(file) {
+	let img = new Image();
+	img.src = file;
+
+    document.querySelector(".creator-page.p1 button").innerHTML = "Aguarde...";
+    document.querySelector(".creator-page.p1 button").removeAttribute("onclick");
+
+	img.onload = function() {
+		document.querySelector(".creator-page.p1").classList.add("hidden");
         document.querySelector(".creator-page.p2").classList.remove("hidden");
+        document.querySelector(".creator-page.p1 button").innerHTML = "Prosseguir pra criar perguntas";
+        document.querySelector(".creator-page.p1 button").setAttribute("onclick", "validacaoBasico()");
         criarPerquntas(tamPerguntas);
         const arrPerguntas = {title: "", color: "", answers: [{text: "", image: ""},{text: "", image: ""},{text: "", image: ""},{text: "", image: ""}]};
         const arrNiveis = {title: "", image: "", text: "", minValue: -1};
@@ -235,17 +248,22 @@ function validacaoBasico(){
         for(let j=0; j<tamNiveis; j++){
             userQuizz.levels[j] = arrNiveis;
         }
-    }
+	}
+	img.onerror = function() {
+		alert("imagem inválida");
+        document.querySelector(".creator-page.p1 button").innerHTML = "Prosseguir pra criar perguntas";
+        document.querySelector(".creator-page.p1 button").setAttribute("onclick", "validacaoBasico()");
+	}
 }
 
 function criarPerquntas(pergunta){
     const page32 = document.querySelector(".creator-page.p2");
     for(let i=1; i<pergunta; i++){
-        page32.innerHTML += `   <div class="fechado p">
+        page32.innerHTML += `   <div class="fechado p${i+1}">
                                     <h1>Pergunta ${i+1}</h1>
-                                    <ion-icon name="create-outline"></ion-icon>
+                                    <ion-icon onclick="abrirPergunta(this)" name="create-outline"></ion-icon>
                                 </div>
-                                <div class="pergunta hidden">
+                                <div class="pergunta p${i+1} hidden">
                                     <h1>Pergunta ${i+1}</h1>
                                     <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Texto da pergunta ${i}" value="Texto da pergunta"/>
                                     <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Cor de fundo da pergunta ${i}" value="Cor de fundo da pergunta"/>
@@ -270,12 +288,12 @@ function criarPerquntas(pergunta){
 function getInputBlurPerg(blur){
     for(let i=0; i<userQuizz.questions.length; i++){
         if(blur.getAttribute("name") === `Texto da pergunta ${i}`){
-            userQuizz.questions[i]= {title: blur.value, color: userQuizz.questions[i].color, answers: userQuizz.questions[i].answers};
+            userQuizz.questions[i]= {title: blur.value, color: userQuizz.questions[i].color, answers: [userQuizz.questions[i].answers[0], userQuizz.questions[i].answers[1], userQuizz.questions[i].answers[2], userQuizz.questions[i].answers[3]]};
             if(blur.value === ""){
                 blur.value = "Texto da pergunta";
             }
         }else if(blur.getAttribute("name") === `Cor de fundo da pergunta ${i}`){
-            userQuizz.questions[i]= {title: userQuizz.questions[i].title, color: blur.value, answers: userQuizz.questions[i].answers};
+            userQuizz.questions[i]= {title: userQuizz.questions[i].title, color: blur.value, answers: [userQuizz.questions[i].answers[0], userQuizz.questions[i].answers[1], userQuizz.questions[i].answers[2], userQuizz.questions[i].answers[3]]};
             if(blur.value === ""){
                 blur.value = "Cor de fundo da pergunta";
             }
@@ -286,6 +304,7 @@ function getInputBlurPerg(blur){
             }
         }else if(blur.getAttribute("name") === `URL da imagem ${i}`){
             userQuizz.questions[i].answers[0]= {text: userQuizz.questions[i].answers[0].text, image: blur.value, isCorrectAnswer: true};
+            validaimgPer(blur.value);
             if(blur.value === ""){
                 blur.value = "URL da imagem";
             }
@@ -296,6 +315,7 @@ function getInputBlurPerg(blur){
             }
         }else if(blur.getAttribute("name") === `URL da imagem 1 ${i}`){
             userQuizz.questions[i].answers[1]= {text: userQuizz.questions[i].answers[1].text, image: blur.value, isCorrectAnswer: false};
+            validaimgPer(blur.value);
             if(blur.value === ""){
                 blur.value = "URL da imagem 1";
             }
@@ -306,6 +326,7 @@ function getInputBlurPerg(blur){
             }
         }else if(blur.getAttribute("name") === `URL da imagem 2 ${i}`){
             userQuizz.questions[i].answers[2]= {text: userQuizz.questions[i].answers[2].text, image: blur.value, isCorrectAnswer: false};
+            validaimgPer(blur.value);
             if(blur.value === ""){
                 blur.value = "URL da imagem 2";
             }
@@ -316,9 +337,44 @@ function getInputBlurPerg(blur){
             }
         }else if(blur.getAttribute("name") === `URL da imagem 3 ${i}`){
             userQuizz.questions[i].answers[3]= {text: userQuizz.questions[i].answers[3].text, image: blur.value, isCorrectAnswer: false};
+            validaimgPer(blur.value);
             if(blur.value === ""){
                 blur.value = "URL da imagem 3";
             }
+        }
+    }
+}
+
+function validaimgPer(file){
+    let img = new Image();
+    img.src = file;
+
+    document.querySelector(".creator-page.p2 button").innerHTML = "Aguarde...";
+    document.querySelector(".creator-page.p2 button").removeAttribute("onclick");
+
+    img.onload = function(){
+        document.querySelector(".creator-page.p2 button").innerHTML = "Prosseguir pra criar perguntas";
+        document.querySelector(".creator-page.p2 button").setAttribute("onclick", "validacaoPerguntas()");
+    }
+    img.onerror = function(){
+        if(file === ""){
+            document.querySelector(".creator-page.p2 button").innerHTML = "Prosseguir pra criar perguntas";
+            document.querySelector(".creator-page.p2 button").setAttribute("onclick", "validacaoPerguntas()"); 
+        }else{
+            return alert("Imagem inválida");
+        }
+    }
+    //document.querySelector(".creator-page.p2").classList.add("hidden");
+    //document.querySelector(".creator-page.p3").classList.remove("hidden");
+}
+
+function abrirPergunta(item){
+    for(let p=0; p<userQuizz.questions.length; p++){
+        document.querySelector(`.fechado.p${p+1}`).classList.remove("hidden");
+        document.querySelector(`.pergunta.p${p+1}`).classList.add("hidden");
+        if(item.parentNode.classList.contains(`p${p+1}`)){
+            item.parentNode.classList.add("hidden");
+            document.querySelector(`.pergunta.p${p+1}`).classList.remove("hidden");
         }
     }
 }
@@ -327,61 +383,47 @@ function validacaoPerguntas(){
     let respostaErrada = -1;
 
     for(let k=0; k<userQuizz.questions.length; k++){
+        respostaErrada = validarRespostaIncorreta(userQuizz.questions[k].answers);
         if(userQuizz.questions[k].title.length < 20){
             return alert("Nome da pergunta inválido");
         }else if(validarNaoCor(userQuizz.questions[k].color)){
             return alert("Cor inválida");
         }else if(userQuizz.questions[k].answers[0].text === ""){
             return alert("Crie uma resposta correta");
-        }else if(!userQuizz.questions[k].answers[0].image.startsWith("https://") && !userQuizz.questions[k].answers[0].image.startsWith("http://")){
-            return alert("Imagem da resposta correta inválida");
+        }else if(userQuizz.questions[k].answers[0].image === ""){
+            return alert("Insira uma imagem correta");
         }
-
-        respostaErrada = validarRespostaIncorreta(userQuizz.questions[k].answers);
         if(respostaErrada === 0){
             return alert("Insira uma resposta incorreta para imagem");
         }else if(respostaErrada === 1){
             return alert("Insira no mínimo uma resposta incorreta");
         }else if(respostaErrada === 2){
             return alert("Insira uma imagem para resposta");
-        }else if(respostaErrada === 3){
-            return alert("Insira no mínimo uma imagem");
-        }else if(respostaErrada === 4){
-            return alert("Imagem incorreta é inválida");
         }
     }
-
-    //document.querySelector(".creator-page.p2").classList.add("hidden");
-    //document.querySelector(".creator-page.p3").classList.remove("hidden");
+    document.querySelector(".creator-page.p2").classList.add("hidden");
+    document.querySelector(".creator-page.p3").classList.remove("hidden");
 }
 
 function validarRespostaIncorreta(respostaIncorreta){
-    let contText = 0;
-    let contImg = 0;
+    let cont = 0;
 
     for(let r=1; r<4; r++){
         if(respostaIncorreta[r].text === ""){
             if(respostaIncorreta[r].image != ""){
                 return 0;
+            }else{
+                cont++;
+                if(cont > 2){
+                    return 1;
+                }   
             }
-            contText++;
-            if(contText > 2){
-                return 1;
-            }
-        }
-        if(respostaIncorreta[r].image === ""){
-            if(respostaIncorreta[r].text != ""){
+        }else if(respostaIncorreta[r].text != ""){
+            if(respostaIncorreta[r].image === ""){
                 return 2;
-            }
-            contImg++;
-            if(contImg > 2){
-                return 3;
-            }
-        }else if(!respostaIncorreta[r].image.startsWith("https://") && !respostaIncorreta[r].image.startsWith("http://")){
-            return 4;
-        }
+            }  
+        }  
     }
-    return 5;
 }
 
 function validarNaoCor(color){
@@ -392,7 +434,7 @@ function validarNaoCor(color){
             return true;
         }
     }
-    if(color.length < 7){
+    if(color.length != 7){
         return true;
     }else if(!color.startsWith("#")){
         return true;

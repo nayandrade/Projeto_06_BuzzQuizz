@@ -85,11 +85,11 @@
         </div>
         <div class="creator-page p2 hidden">
             <h1>Crie suas perguntas</h1>
-            <div class="fechado p hidden">
+            <div class="fechado p1 hidden">
                 <h1>Pergunta 1</h1>
-                <ion-icon name="create-outline"></ion-icon>
+                <ion-icon onclick="abrirPergunta(this)" name="create-outline"></ion-icon>
             </div>
-            <div class="pergunta">
+            <div class="pergunta p1">
                 <h1>Pergunta 1</h1>
                 <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Texto da pergunta 0" value="Texto da pergunta"/>
                 <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Cor de fundo da pergunta 0" value="Cor de fundo da pergunta"/>
@@ -111,7 +111,7 @@
             <h1>Agora, decida os níveis</h1>
             <div class="fechado n hidden">
                 <h1>Nível 1</h1>
-                <ion-icon name="create-outline"></ion-icon>
+                <ion-icon onclick="abrirItem(this)" name="create-outline"></ion-icon>
             </div>
             <div class="creator-data nivel">
                 <h1>Nível 1</h1>
@@ -122,7 +122,7 @@
             </div>
             <div class="fechado n">
                 <h1>Nível 2</h1>
-                <ion-icon name="create-outline"></ion-icon>
+                <ion-icon onclick="abrirItem(this)" name="create-outline"></ion-icon>
             </div>
             <div class="creator-data nivel hidden">
                 <h1>Nível 2</h1>
