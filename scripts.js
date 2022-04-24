@@ -69,16 +69,30 @@ function renderizarQuizz() {
     for (let i = 0; i < perguntas.length; i++) {
         console.log(perguntas[i].answers.length);
         console.log(i);
-        document.querySelector('.quizz-page').innerHTML += `        
-        <div class="quizz-perguntas">
-            <div class="quizz-pergunta-titulo" style="background-color:${perguntas[i].color}">
-                <h3 class="white">${perguntas[i].title}</h3>
-            </div>
-            <div class="quizz-respostas" id="pergunta${i}">               
+        if (perguntas[i].color === '#ffffff') {
+            perguntas[i].color = '#000000';
+            document.querySelector('.quizz-page').innerHTML += `        
+            <div class="quizz-perguntas">
+                <div class="quizz-pergunta-titulo" style="background-color:${perguntas[i].color}">
+                    <h3 class="white">${perguntas[i].title}</h3>
+                </div>
+                <div class="quizz-respostas" id="pergunta${i}">               
                 
-            </div>        
-        </div>  
-        `;
+                </div>        
+            </div>  
+            `;
+        } else {
+            document.querySelector('.quizz-page').innerHTML += `        
+            <div class="quizz-perguntas">
+                <div class="quizz-pergunta-titulo" style="background-color:${perguntas[i].color}">
+                    <h3 class="white">${perguntas[i].title}</h3>
+                </div>
+                <div class="quizz-respostas" id="pergunta${i}">               
+                    
+                </div>        
+            </div>  
+            `;
+        }
         let sequenciaRespostas = [];
         let respostasEmbaralhadas = [];
 
@@ -153,7 +167,7 @@ function escolherResposta(elemento) {
             console.log(`nivel ${nivel}`);
             document.querySelector('.quizz-page').innerHTML += `
             <div class="quizz-finalizar"></div>
-            `
+            `;
             finalizarQuizz();
         } else {
             console.log(todasRespostas);
@@ -165,17 +179,20 @@ function escolherResposta(elemento) {
 
 function finalizarQuizz() {
     let niveis = quizzSelecionado.levels;
-    let nivelFinal = 0
+    let nivelFinal = 0;
     console.log(nivelFinal);
 
     // while (Math.round(nivel) < niveis[i].minValue)
 
     for (let i = 0; i < niveis.length; i++) {
-        if (niveis[i].minValue <= Math.round(nivel) && niveis[i].minValue >= nivelFinal) {
-            nivelFinal = niveis[i].minValue    
+        if (
+            niveis[i].minValue <= Math.round(nivel) &&
+            niveis[i].minValue >= nivelFinal
+        ) {
+            nivelFinal = niveis[i].minValue;
         }
     }
-    console.log(nivelFinal)
+    console.log(nivelFinal);
 
     for (let j = 0; j < niveis.length; j++) {
         if (niveis[j].minValue === nivelFinal) {
@@ -188,15 +205,15 @@ function finalizarQuizz() {
                     <p class="">${niveis[j].text}</p>                                  
                 </div>                    
                 `;
-            
+
             document.querySelector('.quizz-page').innerHTML += `
                 <div class="quizz-reiniciar">Reiniciar Quizz</div>   
                 <div class="quizz-voltar">Voltar pra home</div> 
-            `
+            `;
             break;
         }
     }
-    let quizzPage = document.querySelector('.quizz-page')
+    let quizzPage = document.querySelector('.quizz-page');
     scrollParaElemento(quizzPage.lastElementChild);
     console.log(nivelFinal);
 }
