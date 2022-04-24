@@ -115,6 +115,7 @@ header > h1 {
     height: 31px;
     margin-left: 17px;
     color: #ec362d;
+    cursor: pointer;
 }
 
 .all-quizzes {
@@ -161,6 +162,7 @@ header > h1 {
         #000000
     );
     position: relative;
+    cursor: pointer;
 }
 
 .quizz > img {
@@ -548,11 +550,10 @@ header > h1 {
         font-size: 19px;
     }
 
-    .topo {        
+    .topo {
         height: 142px;
         box-sizing: border-box;
     }
-    
 
     .quizz-topo {
         margin-bottom: 24px;
@@ -573,7 +574,7 @@ header > h1 {
     .quizz-resposta {
         font-size: 13px;
     }
-    
+
     .quizz-pergunta-resposta img {
         width: 100%;
         height: 113px;
@@ -586,15 +587,15 @@ header > h1 {
         margin-bottom: 34px;
     }
 
-    .quizz-nivel {        
+    .quizz-nivel {
         flex-direction: column;
     }
 
-    .quizz-nivel img {        
+    .quizz-nivel img {
         width: 100%;
     }
 
-    .quizz-nivel p {        
+    .quizz-nivel p {
         width: 100%;
         height: auto;
         font-size: 17px;
@@ -609,7 +610,6 @@ header > h1 {
 }
 
 @media (max-width: 600px) {
-
     /*tela 3*/
     .creator-data {
         width: 100%;

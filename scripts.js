@@ -41,10 +41,8 @@ function renderizarQuizzes() {
 }
 
 function escolherQuizz(element) {
-    let bolinha2 = document.querySelector('.conteiner').classList.add('hidden');
-    let mostrarQuizz = document
-        .querySelector('.quizz-page')
-        .classList.remove('hidden');
+    document.querySelector('.conteiner').classList.add('hidden');
+    document.querySelector('.quizz-page').classList.remove('hidden');
     let quizzID = element.querySelector('p').innerHTML.trim();
     console.log(quizzID);
     let index = todosQuizzes.findIndex((element) => element.title === quizzID);
@@ -228,7 +226,6 @@ function reiniciarQuizz() {
     respostasRespondidas = 0;
     respostasCorretas = 0;
     renderizarQuizz();
-    
 }
 
 function voltarParaHome() {
