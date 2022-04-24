@@ -581,14 +581,103 @@ function criarNiveis(nivel) {
                                     n + 1
                                 } hidden">
                                     <h1>Nível ${n + 1}</h1>
-                                    <input type="text" placeholder="Título do nível" value=""/>
-                                    <input type="text" placeholder="% de acerto mínima" value=""/>
-                                    <input type="text" placeholder="URL da imagem do nível" value=""/>
-                                    <input type="text" placeholder="Descrição do nível" value=""/>
+                                    <input type="text" onblur="onblurNivel(this)" name="Título do nível ${n}" placeholder="Título do nível" value=""/>
+                                    <input type="text" onblur="onblurNivel(this)" name="% de acerto mínima ${n}" placeholder="% de acerto mínima" value=""/>
+                                    <input type="text" onblur="onblurNivel(this)" name="URL da imagem do nível ${n}" placeholder="URL da imagem do nível" value=""/>
+                                    <input type="text" onblur="onblurNivel(this)" name="Descrição do nível ${n}" placeholder="Descrição do nível" value=""/>
                                 </div>
         `;
     }
-    page33.innerHTML += `<button class="botao-prosseguir">Finalizar Quizz</button>`;
+    page33.innerHTML += `<button onclick="validarNivel()" class="botao-prosseguir">Finalizar Quizz</button>`;
+}
+
+function onblurNivel(blur) {
+    for(let i = 0; i < userQuizz.levels.length; i++){
+        if(blur.getAttribute("name") === `Título do nível ${i}`){
+            userQuizz.levels[i] = {
+                title: blur.value,
+                image: userQuizz.levels[i].image,
+                text: userQuizz.levels[i].text,
+                minValue: userQuizz.levels[i].minValue
+            };
+        }else if(blur.getAttribute("name") === `% de acerto mínima ${i}`){
+            userQuizz.levels[i] = {
+                title: userQuizz.levels[i].title,
+                image: userQuizz.levels[i].image,
+                text: userQuizz.levels[i].text,
+                minValue: blur.value,
+            };
+        }else if(blur.getAttribute("name") === `URL da imagem do nível ${i}`){
+            validarImgNivel(blur.value);
+            userQuizz.levels[i] = {
+                title: userQuizz.levels[i].title,
+                image: blur.value,
+                text: userQuizz.levels[i].text,
+                minValue: userQuizz.levels[i].minValue
+            };
+        }else if(blur.getAttribute("name") === `Descrição do nível ${i}`){
+            userQuizz.levels[i] = {
+                title: userQuizz.levels[i].title,
+                image: userQuizz.levels[i].image,
+                text: blur.value,
+                minValue: userQuizz.levels[i].minValue
+            };
+        }
+    }
+}
+
+function validarImgNivel(file){
+    let img = new Image();
+    img.src = file;
+   
+    document.querySelector(".creator-page.p3 button").removeAttribute("onclick");
+    document.querySelector(".creator-page.p3 button").innerHTML = "Aguarde...";
+
+    img.onload = function(){
+        document.querySelector(".creator-page.p3 button").setAttribute("onclick", "validarNivel()");
+        document.querySelector(".creator-page.p3 button").innerHTML = "Finalizar Quizz";
+    }
+    img.onerror = function(){
+        if(file === ""){
+            document.querySelector(".creator-page.p3 button").setAttribute("onclick", "validarNivel()");
+            document.querySelector(".creator-page.p3 button").innerHTML = "Finalizar Quizz";
+            return alert("Insira uma imagem válida");
+        }else{
+            document.querySelector(".creator-page.p3 button").innerHTML = "Imagem inválida";
+            return alert("Insira uma imagem válida");
+        }
+    }
+}
+
+function validarNivel(){
+    let boolval = false;
+    for(let n = 0; n < userQuizz.levels.length; n++){
+        if(userQuizz.levels[n].title < 10){
+            return alert("Título inválido");
+        }else if(typeof(Number(userQuizz.levels[n].minValue)) != "number"){
+            return alert("Insira apenas números em acerto mínimo");
+        }else if(userQuizz.levels[n].image === ""){
+            return alert("Insira o endereço de uma imagem");
+        }else if(userQuizz.levels[n].text < 30){
+            return alert("Descrição do nível inválida");
+        }
+        if(typeof(Number(userQuizz.levels[n].minValue)) === "number"){
+            for(let i = 0; i < n; i++){
+                if(userQuizz.levels[i].minValue === userQuizz.levels[n].minValue){
+                    return alert("Insira valores de níveis diferentes");
+                }
+            }
+            if(Number(userQuizz.levels[n].minValue) === 0){
+                boolval = true;
+            }
+        }
+    }
+    if(boolval){
+        document.querySelector(".creator-page.p3").classList.add("hidden");
+        document.querySelector(".creator-page.p4").classList.remove("hidden");
+    }else{
+        return alert("Insira um nível com acerto 0%");
+    }
 }
 
 function abrirNivel(item) {
