@@ -69,7 +69,10 @@ function renderizarQuizz() {
     for (let i = 0; i < perguntas.length; i++) {
         console.log(perguntas[i].answers.length);
         console.log(i);
-        if (perguntas[i].color === '#ffffff' || perguntas[i].color === '#fdfdfd') {
+        if (
+            perguntas[i].color === '#ffffff' ||
+            perguntas[i].color === '#fdfdfd'
+        ) {
             perguntas[i].color = '#000000';
             document.querySelector('.quizz-page').innerHTML += `        
             <div class="quizz-perguntas">
@@ -120,6 +123,7 @@ function renderizarQuizz() {
             `;
         }
     }
+    scrollParaTopo();
 }
 function escolherResposta(elemento) {
     let perguntas = quizzSelecionado.questions;
@@ -219,18 +223,17 @@ function finalizarQuizz() {
 }
 
 function reiniciarQuizz() {
-    console.log("reiniciar Quizz")
+    console.log('reiniciar Quizz');
     //let elemento = document.querySelector('header')
     respostasRespondidas = 0;
     respostasCorretas = 0;
-    renderizarQuizz()
-    scrollParaTopo()
+    renderizarQuizz();
     
 }
 
 function voltarParaHome() {
     window.location.reload();
-    console.log("Voltar para Home")
+    console.log('Voltar para Home');
 }
 
 function shuffle(array) {
@@ -247,12 +250,12 @@ function scrollParaElemento(elemento) {
 }
 
 function scrollParaTopo() {
-    elemento = document.querySelector('.quizz-topo')
-    console.log(elemento)
+    elemento = document.querySelector('.quizz-topo');
+    console.log(elemento);
 
     setTimeout(() => {
         elemento.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }, 1000);
+    }, 500);
 }
 
 // ------------- tela 3 ----------------

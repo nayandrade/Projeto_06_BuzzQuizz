@@ -19,8 +19,6 @@ h2 {
     color: #ffffff;
 }
 
-
-
 h3 {
     font-family: 'Roboto', sans-serif;
     font-size: 20px;
@@ -198,7 +196,7 @@ header > h1 {
 }
 
 .quizz-finalizar-titulo {
-    background-color: #EC362D;
+    background-color: #ec362d;
     width: 100%;
     height: 99px;
     margin-bottom: 18px;
@@ -232,9 +230,9 @@ header > h1 {
     width: 260px;
     height: 52px;
     border-radius: 15px;
-    background-color: #EC362D;
+    background-color: #ec362d;
     font-size: 21px;
-    color:#FFF5F4;
+    color: #fff5f4;
     font-weight: 400;
     display: flex;
     justify-content: center;
@@ -278,12 +276,12 @@ header > h1 {
     z-index: 1;
     word-break: break-all;
     text-align: center;
-
 }
 
 .topo img {
     display: flex;
     width: 100%;
+    filter: brightness(40%);
 }
 .quizz-page {
     width: 100%;
@@ -297,10 +295,6 @@ header > h1 {
 .quizz-topo {
     width: 100%;
     margin-bottom: 42px;
-}
-
-.quizz-topo img {
-    filter: brightness(40%);
 }
 
 .quizz-perguntas {
@@ -345,7 +339,6 @@ header > h1 {
     cursor: pointer;
     position: relative;
     padding: 5px 0;
-    
 }
 
 .quizz-pergunta-resposta img {
@@ -353,8 +346,6 @@ header > h1 {
     height: 175px;
     margin-bottom: 15px;
 }
-
-
 
 .respondido .true {
     color: #009c22;
@@ -497,7 +488,6 @@ header > h1 {
 .creator-data.nivel {
     height: 320px;
     margin-bottom: 24px;
-    
 }
 
 .p4 .botao-prosseguir {
@@ -552,6 +542,64 @@ header > h1 {
         margin-right: 15px;
     }
     /*fim tela 1*/
+    /*tela 2*/
+    h3,
+    h2 {
+        font-size: 19px;
+    }
+
+    .topo {        
+        height: 142px;
+        box-sizing: border-box;
+    }
+    
+
+    .quizz-topo {
+        margin-bottom: 24px;
+    }
+
+    .quizz-perguntas {
+        box-sizing: border-box;
+        width: 339px;
+        height: auto;
+        padding: 20px;
+        margin-bottom: 28px;
+    }
+
+    .quizz-pergunta-titulo {
+        height: 89px;
+    }
+
+    .quizz-resposta {
+        font-size: 13px;
+    }
+    
+    .quizz-pergunta-resposta img {
+        width: 100%;
+        height: 113px;
+        margin-bottom: 5px;
+    }
+
+    .quizz-finalizar {
+        box-sizing: border-box;
+        width: 339px;
+        margin-bottom: 34px;
+    }
+
+    .quizz-nivel {        
+        flex-direction: column;
+    }
+
+    .quizz-nivel img {        
+        width: 100%;
+    }
+
+    .quizz-nivel p {        
+        width: 100%;
+        height: auto;
+        font-size: 17px;
+        margin: 15px 0;
+    }
 
     /*tela 3*/
     .quizz-creator {
@@ -561,6 +609,7 @@ header > h1 {
 }
 
 @media (max-width: 600px) {
+
     /*tela 3*/
     .creator-data {
         width: 100%;
