@@ -579,7 +579,7 @@ function validacaoPerguntas() {
 function validarRespostaIncorreta(respostaIncorreta) {
     let cont = 0;
 
-    for (let r = 1; r < 4; r++) {
+    for (let r = 1; r < respostaIncorreta.length; r++) {
         if (respostaIncorreta[r].text === '') {
             if (respostaIncorreta[r].image != '') {
                 return 0;
@@ -780,7 +780,8 @@ function escolherQuizz2(){
     document.querySelector(".creator-page.p1").classList.remove("hidden");
     document.querySelector(".quizz-creator").classList.add("hidden");
     document.querySelector(".conteiner").classList.remove("hidden");
-    escolherQuizz(userQuizz);
+    let dom = document.querySelector(".creator-page.p4 .quizz")
+    escolherQuizz(dom);
 }
 
 function escolherVoltar(){
