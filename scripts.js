@@ -35,22 +35,29 @@ function renderizarQuizzes() {
             <div class="quizz" onclick="escolherQuizz(this)">
                 <img src="${todosQuizzes[i].image}" alt=""/>
                 <p>${todosQuizzes[i].title}</p>
+                <span class="hidden">${todosQuizzes[i].id}</span>
             </div>             
         `;
     }
 }
 
-function escolherQuizz(element) {
-    document.querySelector('.conteiner').classList.add('hidden');
-    document.querySelector('.quizz-page').classList.remove('hidden');
-    let quizzID = element.querySelector('p').innerHTML.trim();
-    console.log(quizzID);
-    let index = todosQuizzes.findIndex((element) => element.title === quizzID);
-    console.log(index);
-    quizzSelecionado = todosQuizzes[index];
-    console.log(quizzSelecionado);
-    renderizarQuizz();
-}
+ function escolherQuizz(element) {
+     document.querySelector('.conteiner').classList.add('hidden');
+     document.querySelector('.quizz-page').classList.remove('hidden');
+     let quizzID = element.querySelector('span').innerHTML.trim();
+     console.log(quizzID);
+     console.log(typeof(quizzID))
+     console.log(element)
+     let index = todosQuizzes.findIndex(x => x.id === Number(quizzID));
+     console.log(index);
+     console.log(element.id)
+     console.log(element.title)
+     console.log(element.image)
+     quizzSelecionado = todosQuizzes[index];
+     console.log(quizzSelecionado);
+     renderizarQuizz();
+ }
+
 
 function renderizarQuizz() {
     document.querySelector('.quizz-page').innerHTML = `
