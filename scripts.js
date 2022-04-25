@@ -71,7 +71,7 @@ function renderizarQuizz() {
             perguntas[i].color === '#fdfdfd'
         ) {
             perguntas[i].color = '#000000';
-            document.querySelector('.quizz-page').innerHTML += `        
+            document.querySelector('.quiverPromisezz-page').innerHTML += `        
             <div class="quizz-perguntas">
                 <div class="quizz-pergunta-titulo" style="background-color:${perguntas[i].color}">
                     <h3 class="white">${perguntas[i].title}</h3>
@@ -568,7 +568,7 @@ function validacaoPerguntas() {
         } else if (respostaErrada === 2) {
             return alert('Insira uma imagem para resposta');
         }
-        userQuizz.questions[k].answers = userQuizz.questions[k].answers.filter((answer) => answer.text != '');
+        //userQuizz.questions[k].answers = userQuizz.questions[k].answers.filter((answer) => answer.text != '');
     }
     
 
@@ -731,6 +731,9 @@ function validarNivel() {
     }
     if(boolval){
         document.querySelector(".creator-page.p3").classList.add("hidden");
+        for(let i=0; i<userQuizz.questions.length; i++){
+            userQuizz.questions[i].answers = userQuizz.questions[i].answers.filter((answer) => answer.text != '');
+        }
         const promisePost = axios.post("https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes", userQuizz);
         promisePost.then(mostrarQuizz);
     }else{
@@ -773,6 +776,8 @@ function mostrarQuizz(id){
                         <button onclick="escolherVoltar()" class="botao-home">Voltar pra home</button>
     `;
     console.log(id);
+    console.log(id.data.id);
+    //armazenarQuizz(id.data);
 }
 
 function escolherQuizz2(){
@@ -787,4 +792,9 @@ function escolherQuizz2(){
 function escolherVoltar(){
     window.location.reload();
 }
+
+/*function armazenarQuizz(quizzLocal){
+
+    localStorage.setItem(`${quizzLocal.id}`)
+}*/
 // -------------------------------------
