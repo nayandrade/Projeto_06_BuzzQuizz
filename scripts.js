@@ -1,5 +1,6 @@
 let todosQuizzes = [];
 let quizzSelecionado = {};
+let quizzID;
 const TEMPO2S = 2 * 1000;
 const TEMPO_MEIO_S = 500;
 let respostasCorretas = 0;
@@ -44,7 +45,7 @@ function renderizarQuizzes() {
  function escolherQuizz(element) {
      document.querySelector('.conteiner').classList.add('hidden');
      document.querySelector('.quizz-page').classList.remove('hidden');
-     let quizzID = element.querySelector('span').innerHTML.trim();
+     quizzID = element.querySelector('span').innerHTML.trim();
      console.log(quizzID);
      console.log(typeof(quizzID))
      console.log(element)
@@ -770,23 +771,46 @@ function mostrarQuizz(id) {
                             <p>
                                 ${userQuizz.title}
                             </p>
+                            
                         </div>
                         <button onclick="escolherQuizz2()" class="botao-prosseguir">Acessar Quizz</button>
                         <button onclick="escolherVoltar()" class="botao-home">Voltar pra home</button>
     `;
     console.log(id);
     console.log(id.data.id);
+    quizzID = id.data.id
+    let promise = axios.get(
+        'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes'
+    );
+    promise.then(verPromise);
+    promise.then(carregarQuizz2);
+    
     //armazenarQuizz(id.data);
 }
 
-function escolherQuizz2() {
-    document.querySelector('.creator-page.p4').classList.add('hidden');
-    document.querySelector('.creator-page.p1').classList.remove('hidden');
-    document.querySelector('.quizz-creator').classList.add('hidden');
-    document.querySelector('.conteiner').classList.remove('hidden');
-    let dom = document.querySelector('.creator-page.p4 .quizz');
-    escolherQuizz(dom);
+function carregarQuizz2(response) {
+    todosQuizzes = response.data;  
+    
+    
+    //document.querySelector('.creator-page.p1').classList.remove('hidden');
+    
+    //document.querySelector('.conteiner').classList.remove('hidden');
+      
+    //promise.catch(tratarFalha);
+    //let dom = document.querySelector('.creator-page.p4 .quizz');
+    //escolherQuizz(dom);
 }
+
+function escolherQuizz2 () {
+    document.querySelector('.quizz-creator').classList.add('hidden');
+    document.querySelector('.creator-page.p4').classList.add('hidden');
+    document.querySelector('.quizz-page').classList.remove('hidden');
+    let index = todosQuizzes.findIndex(x => x.id === Number(quizzID));
+    quizzSelecionado = todosQuizzes[index];
+    renderizarQuizz();  
+
+}
+
 
 function escolherVoltar() {
     window.location.reload();
