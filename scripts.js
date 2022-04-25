@@ -1,6 +1,7 @@
 let todosQuizzes = [];
 let quizzSelecionado = {};
 const TEMPO2S = 2 * 1000;
+const TEMPO_MEIO_S = 500;
 let respostasCorretas = 0;
 let respostasRespondidas = 0;
 let nivel = 0;
@@ -77,32 +78,33 @@ function renderizarQuizz() {
                 </div>        
             </div>  
             `;
-    }
-    let sequenciaRespostas = [];
-    let respostasEmbaralhadas = [];
 
-    for (let j = 0; j < perguntas[i].answers.length; j++) {
-        console.log(j);
-        sequenciaRespostas.push(j);
-        console.log(sequenciaRespostas);
-    }
+        let sequenciaRespostas = [];
+        let respostasEmbaralhadas = [];
 
-    shuffle(sequenciaRespostas);
-    for (let k = 0; k < sequenciaRespostas.length; k++) {
-        respostasEmbaralhadas.push(sequenciaRespostas[k]);
-    }
-    console.log(respostasEmbaralhadas);
+        for (let j = 0; j < perguntas[i].answers.length; j++) {
+            console.log(j);
+            sequenciaRespostas.push(j);
+            console.log(sequenciaRespostas);
+        }
 
-    for (let k = 0; k < respostasEmbaralhadas.length; k++) {
-        let id = `pergunta${i}`;
-        let resposta = respostasEmbaralhadas[k];
-        document.getElementById(id).innerHTML += `
-                <div class="quizz-pergunta-resposta ${perguntas[i].answers[resposta].isCorrectAnswer}" onclick="escolherResposta(this)">
-                    <div class="hidden opacidade"></div>
-                    <img src="${perguntas[i].answers[resposta].image}" alt="">
-                    <span class="quizz-resposta">${perguntas[i].answers[resposta].text}</span>
-                </div>
-            `;
+        shuffle(sequenciaRespostas);
+        for (let k = 0; k < sequenciaRespostas.length; k++) {
+            respostasEmbaralhadas.push(sequenciaRespostas[k]);
+        }
+        console.log(respostasEmbaralhadas);
+
+        for (let k = 0; k < respostasEmbaralhadas.length; k++) {
+            let id = `pergunta${i}`;
+            let resposta = respostasEmbaralhadas[k];
+            document.getElementById(id).innerHTML += `
+                        <div class="quizz-pergunta-resposta ${perguntas[i].answers[resposta].isCorrectAnswer}" onclick="escolherResposta(this)">
+                            <div class="hidden opacidade"></div>
+                            <img src="${perguntas[i].answers[resposta].image}" alt="">
+                            <span class="quizz-resposta">${perguntas[i].answers[resposta].text}</span>
+                        </div>
+                    `;
+        }
     }
 
     scrollParaTopo();
@@ -236,7 +238,7 @@ function scrollParaTopo() {
 
     setTimeout(() => {
         elemento.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }, 500);
+    }, TEMPO_MEIO_S);
 }
 
 // ------------- tela 3 ----------------
@@ -553,9 +555,10 @@ function validacaoPerguntas() {
         } else if (respostaErrada === 2) {
             return alert('Insira uma imagem para resposta');
         }
-        userQuizz.questions[k].answers = userQuizz.questions[k].answers.filter((answer) => answer.text != '');
+        userQuizz.questions[k].answers = userQuizz.questions[k].answers.filter(
+            (answer) => answer.text != ''
+        );
     }
-    
 
     document.querySelector('.creator-page.p2').classList.add('hidden');
     document.querySelector('.creator-page.p3').classList.remove('hidden');
@@ -700,13 +703,19 @@ function validarNivel() {
         } else if (userQuizz.levels[n].text < 30) {
             return alert('Descrição do nível inválida');
         }
-        if(typeof(Number(userQuizz.levels[n].minValue)) === "number"){
-            if(Number(userQuizz.levels[n].minValue) < 0 || Number(userQuizz.levels[n].minValue) > 100){
-                return alert("Nível inválido");
+        if (typeof Number(userQuizz.levels[n].minValue) === 'number') {
+            if (
+                Number(userQuizz.levels[n].minValue) < 0 ||
+                Number(userQuizz.levels[n].minValue) > 100
+            ) {
+                return alert('Nível inválido');
             }
-            for(let i = 0; i < n; i++){
-                if(userQuizz.levels[i].minValue === userQuizz.levels[n].minValue){
-                    return alert("Insira valores de níveis diferentes");
+            for (let i = 0; i < n; i++) {
+                if (
+                    userQuizz.levels[i].minValue ===
+                    userQuizz.levels[n].minValue
+                ) {
+                    return alert('Insira valores de níveis diferentes');
                 }
             }
             if (Number(userQuizz.levels[n].minValue) === 0) {
@@ -714,12 +723,15 @@ function validarNivel() {
             }
         }
     }
-    if(boolval){
-        document.querySelector(".creator-page.p3").classList.add("hidden");
-        const promisePost = axios.post("https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes", userQuizz);
+    if (boolval) {
+        document.querySelector('.creator-page.p3').classList.add('hidden');
+        const promisePost = axios.post(
+            'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes',
+            userQuizz
+        );
         promisePost.then(mostrarQuizz);
-    }else{
-        return alert("Insira um nível com acerto 0%");
+    } else {
+        return alert('Insira um nível com acerto 0%');
     }
 }
 
@@ -741,9 +753,9 @@ function abrirNivel(item) {
     }
 }
 
-function mostrarQuizz(id){
-    const page34 = document.querySelector(".creator-page.p4");
-    page34.classList.remove("hidden");
+function mostrarQuizz(id) {
+    const page34 = document.querySelector('.creator-page.p4');
+    page34.classList.remove('hidden');
     page34.innerHTML = `<h1>Seu quizz está pronto!</h1>
                         <div class="quizz">
                             <img
@@ -760,16 +772,16 @@ function mostrarQuizz(id){
     console.log(id);
 }
 
-function escolherQuizz2(){
-    document.querySelector(".creator-page.p4").classList.add("hidden");
-    document.querySelector(".creator-page.p1").classList.remove("hidden");
-    document.querySelector(".quizz-creator").classList.add("hidden");
-    document.querySelector(".conteiner").classList.remove("hidden");
-    let dom = document.querySelector(".creator-page.p4 .quizz")
+function escolherQuizz2() {
+    document.querySelector('.creator-page.p4').classList.add('hidden');
+    document.querySelector('.creator-page.p1').classList.remove('hidden');
+    document.querySelector('.quizz-creator').classList.add('hidden');
+    document.querySelector('.conteiner').classList.remove('hidden');
+    let dom = document.querySelector('.creator-page.p4 .quizz');
     escolherQuizz(dom);
 }
 
-function escolherVoltar(){
+function escolherVoltar() {
     window.location.reload();
 }
 // -------------------------------------
