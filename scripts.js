@@ -67,60 +67,45 @@ function renderizarQuizz() {
     for (let i = 0; i < perguntas.length; i++) {
         console.log(perguntas[i].answers.length);
         console.log(i);
-        if (
-            perguntas[i].color === '#ffffff' ||
-            perguntas[i].color === '#fdfdfd'
-        ) {
-            perguntas[i].color = '#000000';
-            document.querySelector('.quizz-page').innerHTML += `        
+
+        document.querySelector('.quizz-page').innerHTML += `        
             <div class="quizz-perguntas">
                 <div class="quizz-pergunta-titulo" style="background-color:${perguntas[i].color}">
-                    <h3 class="white">${perguntas[i].title}</h3>
-                </div>
-                <div class="quizz-respostas" id="pergunta${i}">               
-                
-                </div>        
-            </div>  
-            `;
-        } else {
-            document.querySelector('.quizz-page').innerHTML += `        
-            <div class="quizz-perguntas">
-                <div class="quizz-pergunta-titulo" style="background-color:${perguntas[i].color}">
-                    <h3 class="white">${perguntas[i].title}</h3>
+                    <h3 class="white box">${perguntas[i].title}</h3>
                 </div>
                 <div class="quizz-respostas" id="pergunta${i}">               
                     
                 </div>        
             </div>  
             `;
-        }
-        let sequenciaRespostas = [];
-        let respostasEmbaralhadas = [];
+    }
+    let sequenciaRespostas = [];
+    let respostasEmbaralhadas = [];
 
-        for (let j = 0; j < perguntas[i].answers.length; j++) {
-            console.log(j);
-            sequenciaRespostas.push(j);
-            console.log(sequenciaRespostas);
-        }
+    for (let j = 0; j < perguntas[i].answers.length; j++) {
+        console.log(j);
+        sequenciaRespostas.push(j);
+        console.log(sequenciaRespostas);
+    }
 
-        shuffle(sequenciaRespostas);
-        for (let k = 0; k < sequenciaRespostas.length; k++) {
-            respostasEmbaralhadas.push(sequenciaRespostas[k]);
-        }
-        console.log(respostasEmbaralhadas);
+    shuffle(sequenciaRespostas);
+    for (let k = 0; k < sequenciaRespostas.length; k++) {
+        respostasEmbaralhadas.push(sequenciaRespostas[k]);
+    }
+    console.log(respostasEmbaralhadas);
 
-        for (let k = 0; k < respostasEmbaralhadas.length; k++) {
-            let id = `pergunta${i}`;
-            let resposta = respostasEmbaralhadas[k];
-            document.getElementById(id).innerHTML += `
+    for (let k = 0; k < respostasEmbaralhadas.length; k++) {
+        let id = `pergunta${i}`;
+        let resposta = respostasEmbaralhadas[k];
+        document.getElementById(id).innerHTML += `
                 <div class="quizz-pergunta-resposta ${perguntas[i].answers[resposta].isCorrectAnswer}" onclick="escolherResposta(this)">
                     <div class="hidden opacidade"></div>
                     <img src="${perguntas[i].answers[resposta].image}" alt="">
                     <span class="quizz-resposta">${perguntas[i].answers[resposta].text}</span>
                 </div>
             `;
-        }
     }
+
     scrollParaTopo();
 }
 function escolherResposta(elemento) {
