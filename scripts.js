@@ -6,7 +6,6 @@ let respostasRespondidas = 0;
 let nivel = 0;
 
 let userQuizz = { image: '', levels: [], questions: [], title: '' };
-let arrayImg = [];
 let tamPerguntas = 0;
 let tamNiveis = 0;
 
@@ -323,10 +322,10 @@ function validaimg(file) {
             title: '',
             color: '',
             answers: [
-                { text: '', image: '' },
-                { text: '', image: '' },
-                { text: '', image: '' },
-                { text: '', image: '' },
+                { text: '', image: '', isCorrectAnswer: true },
+                { text: '', image: '', isCorrectAnswer: false },
+                { text: '', image: '', isCorrectAnswer: false },
+                { text: '', image: '', isCorrectAnswer: false },
             ],
         };
         const arrNiveis = { title: '', image: '', text: '', minValue: -1 };
@@ -554,7 +553,10 @@ function validacaoPerguntas() {
         } else if (respostaErrada === 2) {
             return alert('Insira uma imagem para resposta');
         }
+        userQuizz.questions[k].answers = userQuizz.questions[k].answers.filter((answer) => answer.text != '');
     }
+    
+
     document.querySelector('.creator-page.p2').classList.add('hidden');
     document.querySelector('.creator-page.p3').classList.remove('hidden');
 }
@@ -562,7 +564,7 @@ function validacaoPerguntas() {
 function validarRespostaIncorreta(respostaIncorreta) {
     let cont = 0;
 
-    for (let r = 1; r < 4; r++) {
+    for (let r = 1; r < respostaIncorreta.length; r++) {
         if (respostaIncorreta[r].text === '') {
             if (respostaIncorreta[r].image != '') {
                 return 0;
@@ -582,7 +584,7 @@ function validarRespostaIncorreta(respostaIncorreta) {
 
 function validarNaoCor(color) {
     color.toLowerCase();
-    let caracteres = 'ghijklmnopqrstuvwxyz*/?:.,;$%@!&()_-+=';
+    let caracteres = `ghijklmnopqrstuvwxyz*""''/?:.,;$%@!&()_-+=`;
     for (let c = 0; c < caracteres.length; c++) {
         if (color.indexOf(caracteres[c]) != -1) {
             return true;
@@ -698,13 +700,13 @@ function validarNivel() {
         } else if (userQuizz.levels[n].text < 30) {
             return alert('Descrição do nível inválida');
         }
-        if (typeof Number(userQuizz.levels[n].minValue) === 'number') {
-            for (let i = 0; i < n; i++) {
-                if (
-                    userQuizz.levels[i].minValue ===
-                    userQuizz.levels[n].minValue
-                ) {
-                    return alert('Insira valores de níveis diferentes');
+        if(typeof(Number(userQuizz.levels[n].minValue)) === "number"){
+            if(Number(userQuizz.levels[n].minValue) < 0 || Number(userQuizz.levels[n].minValue) > 100){
+                return alert("Nível inválido");
+            }
+            for(let i = 0; i < n; i++){
+                if(userQuizz.levels[i].minValue === userQuizz.levels[n].minValue){
+                    return alert("Insira valores de níveis diferentes");
                 }
             }
             if (Number(userQuizz.levels[n].minValue) === 0) {
@@ -712,11 +714,12 @@ function validarNivel() {
             }
         }
     }
-    if (boolval) {
-        document.querySelector('.creator-page.p3').classList.add('hidden');
-        document.querySelector('.creator-page.p4').classList.remove('hidden');
-    } else {
-        return alert('Insira um nível com acerto 0%');
+    if(boolval){
+        document.querySelector(".creator-page.p3").classList.add("hidden");
+        const promisePost = axios.post("https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes", userQuizz);
+        promisePost.then(mostrarQuizz);
+    }else{
+        return alert("Insira um nível com acerto 0%");
     }
 }
 
@@ -736,5 +739,37 @@ function abrirNivel(item) {
                 .scrollIntoView();
         }
     }
+}
+
+function mostrarQuizz(id){
+    const page34 = document.querySelector(".creator-page.p4");
+    page34.classList.remove("hidden");
+    page34.innerHTML = `<h1>Seu quizz está pronto!</h1>
+                        <div class="quizz">
+                            <img
+                                src=${userQuizz.image}
+                                alt=""
+                            />
+                            <p>
+                                ${userQuizz.title}
+                            </p>
+                        </div>
+                        <button onclick="escolherQuizz2()" class="botao-prosseguir">Acessar Quizz</button>
+                        <button onclick="escolherVoltar()" class="botao-home">Voltar pra home</button>
+    `;
+    console.log(id);
+}
+
+function escolherQuizz2(){
+    document.querySelector(".creator-page.p4").classList.add("hidden");
+    document.querySelector(".creator-page.p1").classList.remove("hidden");
+    document.querySelector(".quizz-creator").classList.add("hidden");
+    document.querySelector(".conteiner").classList.remove("hidden");
+    let dom = document.querySelector(".creator-page.p4 .quizz")
+    escolherQuizz(dom);
+}
+
+function escolherVoltar(){
+    window.location.reload();
 }
 // -------------------------------------
