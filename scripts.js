@@ -262,40 +262,24 @@ function criarQuizz() {
     document.querySelector('.quizz-creator').classList.remove('hidden');
 }
 
-function getInputFocus(focus) {
-    focus.value = '';
-}
-
 function getInputBlur(blur) {
     if (blur.getAttribute('name') === 'Título do seu quizz') {
         userQuizz.title = blur.value;
-        if (blur.value === '') {
-            blur.value = 'Título do seu quizz';
-        }
     } else if (blur.getAttribute('name') === 'Url da imagem do seu quizz') {
         userQuizz.image = blur.value;
-        if (blur.value === '') {
-            blur.value = 'Url da imagem do seu quizz';
-        }
     } else if (
         blur.getAttribute('name') === 'Quantidade de perguntas do quizz'
     ) {
         if (isNaN(Number(blur.value))) {
-            alert('Cara, digite um número');
+            alert('Digite um número');
         } else {
             tamPerguntas = Number(blur.value);
         }
-        if (blur.value === '') {
-            blur.value = 'Quantidade de perguntas do quizz';
-        }
     } else if (blur.getAttribute('name') === 'Quantidade de níveis do quizz') {
         if (isNaN(Number(blur.value))) {
-            alert('Cara, digite um número');
+            alert('Digite um número');
         } else {
             tamNiveis = Number(blur.value);
-        }
-        if (blur.value === '') {
-            blur.value = 'Quantidade de níveis do quizz';
         }
     }
 }
@@ -368,20 +352,20 @@ function criarPerquntas(pergunta) {
                                 </div>
                                 <div class="pergunta p${i + 1} hidden">
                                     <h1>Pergunta ${i + 1}</h1>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Texto da pergunta ${i}" value="Texto da pergunta"/>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Cor de fundo da pergunta ${i}" value="Cor de fundo da pergunta"/>
+                                    <input placeholder="Texto da pergunta" onblur="getInputBlurPerg(this)" type="text" name="Texto da pergunta ${i}" value=""/>
+                                    <input placeholder="Cor de fundo da pergunta" onblur="getInputBlurPerg(this)" type="text" name="Cor de fundo da pergunta ${i}" value=""/>
                                     <h1>Resposta correta</h1>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Resposta correta ${i}" value="Resposta correta"/>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem ${i}" value="URL da imagem"/>
+                                    <input placeholder="Resposta correta" onblur="getInputBlurPerg(this)" type="text" name="Resposta correta ${i}" value=""/>
+                                    <input placeholder="URL da imagem" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem ${i}" value=""/>
                                     <h1>Respostas incorretas</h1>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 1 ${i}" value="Resposta incorreta 1"/>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 1 ${i}" value="URL da imagem 1"/>
+                                    <input placeholder="Resposta incorreta 1" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 1 ${i}" value=""/>
+                                    <input placeholder="URL da imagem" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 1 ${i}" value=""/>
                                     <h1 class="hidden"></h1>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 2 ${i}" value="Resposta incorreta 2"/>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 2 ${i}" value="URL da imagem 2"/>
+                                    <input placeholder="Resposta incorreta 2" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 2 ${i}" value=""/>
+                                    <input placeholder="URL da imagem" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 2 ${i}" value=""/>
                                     <h1 class="hidden"></h1>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 3 ${i}" value="Resposta incorreta 3"/>
-                                    <input onfocus="getInputFocus(this)" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 3 ${i}" value="URL da imagem 3"/>
+                                    <input placeholder="Resposta incorreta 3" onblur="getInputBlurPerg(this)" type="text" name="Resposta incorreta 3 ${i}" value=""/>
+                                    <input placeholder="URL da imagem" onblur="getInputBlurPerg(this)" type="text" name="URL da imagem 3 ${i}" value=""/>
                                 </div>
         `;
     }
@@ -401,9 +385,6 @@ function getInputBlurPerg(blur) {
                     userQuizz.questions[i].answers[3],
                 ],
             };
-            if (blur.value === '') {
-                blur.value = 'Texto da pergunta';
-            }
         } else if (
             blur.getAttribute('name') === `Cor de fundo da pergunta ${i}`
         ) {
@@ -417,18 +398,12 @@ function getInputBlurPerg(blur) {
                     userQuizz.questions[i].answers[3],
                 ],
             };
-            if (blur.value === '') {
-                blur.value = 'Cor de fundo da pergunta';
-            }
         } else if (blur.getAttribute('name') === `Resposta correta ${i}`) {
             userQuizz.questions[i].answers[0] = {
                 text: blur.value,
                 image: userQuizz.questions[i].answers[0].image,
                 isCorrectAnswer: true,
             };
-            if (blur.value === '') {
-                blur.value = 'Resposta correta';
-            }
         } else if (blur.getAttribute('name') === `URL da imagem ${i}`) {
             userQuizz.questions[i].answers[0] = {
                 text: userQuizz.questions[i].answers[0].text,
@@ -436,18 +411,12 @@ function getInputBlurPerg(blur) {
                 isCorrectAnswer: true,
             };
             validaimgPer(blur.value);
-            if (blur.value === '') {
-                blur.value = 'URL da imagem';
-            }
         } else if (blur.getAttribute('name') === `Resposta incorreta 1 ${i}`) {
             userQuizz.questions[i].answers[1] = {
                 text: blur.value,
                 image: userQuizz.questions[i].answers[1].image,
                 isCorrectAnswer: false,
             };
-            if (blur.value === '') {
-                blur.value = 'Resposta incorreta 1';
-            }
         } else if (blur.getAttribute('name') === `URL da imagem 1 ${i}`) {
             userQuizz.questions[i].answers[1] = {
                 text: userQuizz.questions[i].answers[1].text,
@@ -455,18 +424,12 @@ function getInputBlurPerg(blur) {
                 isCorrectAnswer: false,
             };
             validaimgPer(blur.value);
-            if (blur.value === '') {
-                blur.value = 'URL da imagem 1';
-            }
         } else if (blur.getAttribute('name') === `Resposta incorreta 2 ${i}`) {
             userQuizz.questions[i].answers[2] = {
                 text: blur.value,
                 image: userQuizz.questions[i].answers[2].image,
                 isCorrectAnswer: false,
             };
-            if (blur.value === '') {
-                blur.value = 'Resposta incorreta 2';
-            }
         } else if (blur.getAttribute('name') === `URL da imagem 2 ${i}`) {
             userQuizz.questions[i].answers[2] = {
                 text: userQuizz.questions[i].answers[2].text,
@@ -474,18 +437,12 @@ function getInputBlurPerg(blur) {
                 isCorrectAnswer: false,
             };
             validaimgPer(blur.value);
-            if (blur.value === '') {
-                blur.value = 'URL da imagem 2';
-            }
         } else if (blur.getAttribute('name') === `Resposta incorreta 3 ${i}`) {
             userQuizz.questions[i].answers[3] = {
                 text: blur.value,
                 image: userQuizz.questions[i].answers[3].image,
                 isCorrectAnswer: false,
             };
-            if (blur.value === '') {
-                blur.value = 'Resposta incorreta 3';
-            }
         } else if (blur.getAttribute('name') === `URL da imagem 3 ${i}`) {
             userQuizz.questions[i].answers[3] = {
                 text: userQuizz.questions[i].answers[3].text,
@@ -493,9 +450,6 @@ function getInputBlurPerg(blur) {
                 isCorrectAnswer: false,
             };
             validaimgPer(blur.value);
-            if (blur.value === '') {
-                blur.value = 'URL da imagem 3';
-            }
         }
     }
 }
@@ -551,22 +505,21 @@ function validacaoPerguntas() {
             userQuizz.questions[k].answers
         );
         if (userQuizz.questions[k].title.length < 20) {
-            return alert('Nome da pergunta inválido');
+            return alert(`Nome da pergunta ${k+1} inválido`);
         } else if (validarNaoCor(userQuizz.questions[k].color)) {
-            return alert('Cor inválida');
+            return alert(`Cor ${k+1} inválida`);
         } else if (userQuizz.questions[k].answers[0].text === '') {
-            return alert('Crie uma resposta correta');
+            return alert(`Crie uma resposta correta na pergunta ${k+1}`);
         } else if (userQuizz.questions[k].answers[0].image === '') {
-            return alert('Insira uma imagem correta');
+            return alert(`Insira uma imagem para resposta correta na pergunta ${k+1}`);
         }
         if (respostaErrada === 0) {
-            return alert('Insira uma resposta incorreta para imagem');
+            return alert(`Insira uma resposta incorreta para imagem na pegunta ${k+1}`);
         } else if (respostaErrada === 1) {
-            return alert('Insira no mínimo uma resposta incorreta');
+            return alert(`Insira no mínimo uma resposta incorreta para pergunta ${k+1}`);
         } else if (respostaErrada === 2) {
-            return alert('Insira uma imagem para resposta');
+            return alert(`Insira uma imagem para resposta na pergunta ${k+1}`);
         }
-        //userQuizz.questions[k].answers = userQuizz.questions[k].answers.filter((answer) => answer.text != '');
     }
 
     document.querySelector('.creator-page.p2').classList.add('hidden');
