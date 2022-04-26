@@ -760,7 +760,7 @@ function mostrarQuizz(id) {
                             
                         </div>
                         <button onclick="carregarQuizz2()" class="botao-prosseguir">Acessar Quizz</button>
-                        <button onclick="escolherVoltar()" class="botao-home">Voltar pra home</button>
+                        <button onclick="voltarParaHome()" class="botao-home">Voltar pra home</button>
     `;
     console.log(id);
     console.log(id.data.id);
@@ -791,9 +791,9 @@ function escolherQuizz2(response) {
     renderizarQuizz();
 }
 
-function escolherVoltar() {
-    window.location.reload();
-}
+// function escolherVoltar() {
+//     window.location.reload();
+// }
 
 function armazenarQuizz() {
     let idSerializado = JSON.stringify(meusQuizzes);
