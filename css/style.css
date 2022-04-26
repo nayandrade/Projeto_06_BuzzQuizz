@@ -559,10 +559,13 @@ header > h1 {
 
 @media (max-width: 1100px) {
     /*tela 1*/
+
+    
     .conteiner {
         width: 94%;
         min-width: 340px;
         padding-top: 105px;
+        
     }
 
     .quizz-create {
@@ -572,9 +575,15 @@ header > h1 {
     .div-tittle {
         justify-content: space-between;
     }
+    .quizzes {
+        justify-content: center;
+    }
 
     .quizzes :nth-child(3n) {
         margin-right: 15px;
+    }
+    .quizzes-user {
+        justify-content: center;
     }
 
     .quizzes-user :nth-child(3n) {
