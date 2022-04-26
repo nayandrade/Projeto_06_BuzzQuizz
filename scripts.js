@@ -781,39 +781,35 @@ function mostrarQuizz(id) {
                             </p>
                             
                         </div>
-                        <button onclick="escolherQuizz2()" class="botao-prosseguir">Acessar Quizz</button>
+                        <button onclick="carregarQuizz2()" class="botao-prosseguir">Acessar Quizz</button>
                         <button onclick="escolherVoltar()" class="botao-home">Voltar pra home</button>
     `;
     console.log(id);
     console.log(id.data.id);
     quizzID = id.data.id;
     meusQuizzes.push(quizzID);
-    let promise = axios.get(
-        'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes'
-    );
-    promise.then(verPromise);
-    promise.then(carregarQuizz2);
 
     armazenarQuizz();
 }
 
-function carregarQuizz2(response) {
+function carregarQuizz2() {
+    let promise = axios.get(
+        'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes'
+    );
+    promise.then(verPromise);
+    promise.then(escolherQuizz2);
+}
+
+function escolherQuizz2(response) {
     todosQuizzes = response.data;
     console.log(todosQuizzes);
 
-    //document.querySelector('.creator-page.p1').classList.remove('hidden');
-    //document.querySelector('.conteiner').classList.remove('hidden');
-    //promise.catch(tratarFalha);
-    //let dom = document.querySelector('.creator-page.p4 .quizz');
-    //escolherQuizz(dom);
-}
-
-function escolherQuizz2() {
     document.querySelector('.quizz-creator').classList.add('hidden');
     document.querySelector('.creator-page.p4').classList.add('hidden');
     document.querySelector('.quizz-page').classList.remove('hidden');
     let index = todosQuizzes.findIndex((x) => x.id === Number(quizzID));
     quizzSelecionado = todosQuizzes[index];
+    
     renderizarQuizz();
 }
 
