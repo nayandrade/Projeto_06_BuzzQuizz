@@ -12,9 +12,6 @@ let userQuizz = { image: '', levels: [], questions: [], title: '' };
 let tamPerguntas = 0;
 let tamNiveis = 0;
 
-/* Considerando que a gente sempre dá location.reload pra voltar pra tela inicial, array meuQuizzes tbm vai ser resetado
-portanto é preciso atualiza-lo*/
-
 buscarQuizzesExistentes()
 function buscarQuizzesExistentes() {
     const dadosSerializados = localStorage.getItem('ids');
@@ -34,7 +31,6 @@ function buscarQuizzes() {
     promise.then(verPromise);
     promise.then(carregarQuizzes);
     promise.then(temQuizz);
-    //promise.catch(tratarFalha);
 }
 
 function carregarQuizzes(response) {
@@ -43,15 +39,9 @@ function carregarQuizzes(response) {
     renderizarQuizzes();
 }
 
-//temQuizz();
-
 function renderizarQuizzes() {
-    //let listaQuizzes = {};
     let quiz = document.querySelector('.quizzes');
     quiz.innerHTML = '';
-    /*for(let i=0; i<meusQuizzes.length; i++){
-        listaQuizzes = todosQuizzes.filter((filtroQuizz) => filtroQuizz.id != meusQuizzes[i])
-    }*/
     for (let i = 0; i < todosQuizzes.length; i++) {
         quiz.innerHTML += `
             <div class="quizz" onclick="escolherQuizz(this)">
@@ -67,16 +57,8 @@ function escolherQuizz(element) {
     document.querySelector('.conteiner').classList.add('hidden');
     document.querySelector('.quizz-page').classList.remove('hidden');
     quizzID = element.querySelector('span').innerHTML.trim();
-    console.log(quizzID);
-    console.log(typeof quizzID);
-    console.log(element);
     let index = todosQuizzes.findIndex((x) => x.id === Number(quizzID));
-    console.log(index);
-    console.log(element.id);
-    console.log(element.title);
-    console.log(element.image);
     quizzSelecionado = todosQuizzes[index];
-    console.log(quizzSelecionado);
     renderizarQuizz();
 }
 
@@ -113,14 +95,12 @@ function renderizarQuizz() {
         for (let j = 0; j < perguntas[i].answers.length; j++) {
             console.log(j);
             sequenciaRespostas.push(j);
-            console.log(sequenciaRespostas);
         }
 
         shuffle(sequenciaRespostas);
         for (let k = 0; k < sequenciaRespostas.length; k++) {
             respostasEmbaralhadas.push(sequenciaRespostas[k]);
         }
-        console.log(respostasEmbaralhadas);
 
         for (let k = 0; k < respostasEmbaralhadas.length; k++) {
             let id = `pergunta${i}`;
@@ -145,14 +125,11 @@ function escolherResposta(elemento) {
         let valor = elemento.classList.contains('true');
 
         if (valor === true) {
-            console.log('resposta correta');
             respostasRespondidas++;
             respostasCorretas++;
         } else {
-            console.log('resposta errada');
             respostasRespondidas++;
         }
-        console.log(valor);
 
         perguntaRespondida.classList.add('respondido');
         let perguntaContaner = perguntaRespondida.parentNode;
@@ -196,9 +173,6 @@ function escolherResposta(elemento) {
 function finalizarQuizz() {
     let niveis = quizzSelecionado.levels;
     let nivelFinal = 0;
-    console.log(nivelFinal);
-
-    // while (Math.round(nivel) < niveis[i].minValue)
 
     for (let i = 0; i < niveis.length; i++) {
         if (
@@ -208,7 +182,6 @@ function finalizarQuizz() {
             nivelFinal = niveis[i].minValue;
         }
     }
-    console.log(nivelFinal);
 
     for (let j = 0; j < niveis.length; j++) {
         if (niveis[j].minValue === nivelFinal) {
@@ -231,12 +204,9 @@ function finalizarQuizz() {
     }
     let quizzPage = document.querySelector('.quizz-page');
     scrollParaElemento(quizzPage.lastElementChild);
-    console.log(nivelFinal);
 }
 
 function reiniciarQuizz() {
-    console.log('reiniciar Quizz');
-    //let elemento = document.querySelector('header')
     respostasRespondidas = 0;
     respostasCorretas = 0;
     renderizarQuizz();
@@ -244,7 +214,6 @@ function reiniciarQuizz() {
 
 function voltarParaHome() {
     window.location.reload();
-    console.log('Voltar para Home');
 }
 
 function shuffle(array) {
@@ -262,14 +231,12 @@ function scrollParaElemento(elemento) {
 
 function scrollParaTopo() {
     elemento = document.querySelector('.quizz-topo');
-    console.log(elemento);
 
     setTimeout(() => {
         elemento.scrollIntoView({ block: 'center', behavior: 'smooth' });
     }, TEMPO_MEIO_S);
 }
 
-// ------------- tela 3 ----------------
 function verPromise(p) {
     console.log(p);
 }
@@ -762,11 +729,9 @@ function mostrarQuizz(id) {
                         <button onclick="carregarQuizz2()" class="botao-prosseguir">Acessar Quizz</button>
                         <button onclick="voltarParaHome()" class="botao-home">Voltar pra home</button>
     `;
-    console.log(id);
-    console.log(id.data.id);
+
     quizzID = id.data.id;
     meusQuizzes.push(quizzID);
-
     armazenarQuizz();
 }
 
@@ -791,19 +756,14 @@ function escolherQuizz2(response) {
     renderizarQuizz();
 }
 
-// function escolherVoltar() {
-//     window.location.reload();
-// }
-
 function armazenarQuizz() {
     let idSerializado = JSON.stringify(meusQuizzes);
     localStorage.setItem('ids', idSerializado);
-    console.log(idSerializado);
 }
 
 function temQuizz() {
     let minhaLista = JSON.parse(localStorage.getItem('ids'));
-    console.log(minhaLista);
+
     if (minhaLista !== null) {
        for(let m = 0; m < todosQuizzes.length; m++){
            for(let n = 0; n < minhaLista.length; n++){
@@ -824,11 +784,9 @@ function listarQuizzCreate() {
 function listarQuizzUsuario() {
     document.querySelector('.quizz-create').classList.add('hidden');
     document.querySelector('.all-quizzes-user').classList.remove('hidden');
-    console.log(todosQuizzes);
 
     const idSerializada = localStorage.getItem('ids');
     const lista = JSON.parse(idSerializada);
-    console.log(lista);
 
     for (let i = 0; i < lista.length; i++) {
         let indice = Number(lista[i]);
@@ -836,10 +794,6 @@ function listarQuizzUsuario() {
 
         for (let j = 0; j < todosQuizzes.length; j++) {
             if (todosQuizzes[j].id == indice) {
-                console.log(todosQuizzes);
-                console.log(todosQuizzes[j]);
-
-                console.log(todosQuizzes[j].id);
                 document.querySelector('.quizzes-user').innerHTML += `
                 <div class="quizz" onclick="escolherQuizz(this)">
                     <div class="quizz-button">
@@ -858,7 +812,5 @@ function listarQuizzUsuario() {
 }
 
 function apagarQuizz(element) {
-    confirm('Tem certeza que deseja deletar o quizz?')
-    
+    confirm('Tem certeza que deseja deletar o quizz?')  
 }
-// -------------------------------------
