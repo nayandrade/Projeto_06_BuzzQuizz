@@ -760,6 +760,8 @@ function temQuizz() {
            }
        }
        listarQuizzCreate();
+    }else {
+        listarQuizzCreate();
     } 
 }
 
