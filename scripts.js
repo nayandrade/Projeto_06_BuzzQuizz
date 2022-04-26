@@ -35,7 +35,6 @@ function buscarQuizzes() {
 
 function carregarQuizzes(response) {
     todosQuizzes = response.data;
-    console.log(todosQuizzes);
     renderizarQuizzes();
 }
 
@@ -73,11 +72,7 @@ function renderizarQuizz() {
     `;
     let perguntas = quizzSelecionado.questions;
 
-    console.log(perguntas.length);
     for (let i = 0; i < perguntas.length; i++) {
-        console.log(perguntas[i].answers.length);
-        console.log(i);
-
         document.querySelector('.quizz-page').innerHTML += `        
             <div class="quizz-perguntas">
                 <div class="quizz-pergunta-titulo" style="background-color:${perguntas[i].color}">
@@ -93,7 +88,6 @@ function renderizarQuizz() {
         let respostasEmbaralhadas = [];
 
         for (let j = 0; j < perguntas[i].answers.length; j++) {
-            console.log(j);
             sequenciaRespostas.push(j);
         }
 
@@ -153,18 +147,12 @@ function escolherResposta(elemento) {
         }
 
         if (respostasRespondidas === perguntas.length) {
-            console.log('acabou o quizz');
-            console.log(`respostasCorretas ${respostasCorretas}`);
-            console.log(`respostasRespondidas ${respostasRespondidas}`);
             nivel = (respostasCorretas / respostasRespondidas) * 100;
-            console.log(`nivel ${nivel}`);
             document.querySelector('.quizz-page').innerHTML += `
             <div class="quizz-finalizar"></div>
             `;
             finalizarQuizz();
         } else {
-            console.log(todasRespostas);
-            console.log(todasRespostas.length);
             scrollParaElemento(perguntaContaner.nextElementSibling);
         }
     }
@@ -745,7 +733,6 @@ function carregarQuizz2() {
 
 function escolherQuizz2(response) {
     todosQuizzes = response.data;
-    console.log(todosQuizzes);
 
     document.querySelector('.quizz-creator').classList.add('hidden');
     document.querySelector('.creator-page.p4').classList.add('hidden');
@@ -790,7 +777,6 @@ function listarQuizzUsuario() {
 
     for (let i = 0; i < lista.length; i++) {
         let indice = Number(lista[i]);
-        console.log(indice);
 
         for (let j = 0; j < todosQuizzes.length; j++) {
             if (todosQuizzes[j].id == indice) {
