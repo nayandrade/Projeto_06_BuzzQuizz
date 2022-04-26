@@ -14,10 +14,16 @@ let tamNiveis = 0;
 
 /* Considerando que a gente sempre dá location.reload pra voltar pra tela inicial, array meuQuizzes tbm vai ser resetado
 portanto é preciso atualiza-lo*/
-const dadosSerializados = localStorage.getItem('ids');
-const dadosDeserializados = JSON.parse(dadosSerializados);
-for(let d=0; d<dadosDeserializados.length; d++){
-    meusQuizzes.push(dadosDeserializados[d]);
+
+buscarQuizzesExistentes()
+function buscarQuizzesExistentes() {
+    const dadosSerializados = localStorage.getItem('ids');
+    if (dadosSerializados !== null) {
+        const dadosDeserializados = JSON.parse(dadosSerializados);
+        for (let d = 0; d < dadosDeserializados.length; d++) {
+            meusQuizzes.push(dadosDeserializados[d]);
+        }
+    }
 }
 
 buscarQuizzes();
@@ -297,11 +303,11 @@ function getInputBlur(blur) {
 
 function validacaoBasico() {
     if (userQuizz.title.length < 20 || userQuizz.title.length > 65) {
-        return alert('título inválido');
+        return alert('título inválido: 20 caracteres');
     } else if (tamPerguntas < 3) {
-        return alert('Quantidade de perguntas insuficiente');
+        return alert('Quantidade de perguntas insuficiente: maior que 3');
     } else if (tamNiveis < 2) {
-        return alert('Quantidade de níveis insuficiente');
+        return alert('Quantidade de níveis insuficiente: maior que 2');
     } else {
         validaimg(userQuizz.image);
     }
@@ -345,7 +351,7 @@ function validaimg(file) {
         }
     };
     img.onerror = function () {
-        alert('imagem inválida');
+        alert('imagem inválida: deve ser url');
         document.querySelector('.creator-page.p1 button').innerHTML =
             'Prosseguir pra criar perguntas';
         document
@@ -489,7 +495,7 @@ function validaimgPer(file) {
                 .querySelector('.creator-page.p2 button')
                 .setAttribute('onclick', 'validacaoPerguntas()');
         } else {
-            return alert('Imagem inválida');
+            return alert('Imagem inválida: deve ser url');
         }
     };
 }
@@ -516,20 +522,28 @@ function validacaoPerguntas() {
             userQuizz.questions[k].answers
         );
         if (userQuizz.questions[k].title.length < 20) {
-            return alert(`Nome da pergunta ${k+1} inválido`);
+            return alert(`Nome da pergunta ${k + 1} inválido: deve ter 20 caracteres`);
         } else if (validarNaoCor(userQuizz.questions[k].color)) {
-            return alert(`Cor ${k+1} inválida`);
+            return alert(`Cor ${k + 1} inválida: deve ser hexadecimal`);
         } else if (userQuizz.questions[k].answers[0].text === '') {
-            return alert(`Crie uma resposta correta na pergunta ${k+1}`);
+            return alert(`Crie uma resposta correta na pergunta ${k + 1}`);
         } else if (userQuizz.questions[k].answers[0].image === '') {
-            return alert(`Insira uma imagem para resposta correta na pergunta ${k+1}`);
+            return alert(
+                `Insira uma imagem para resposta correta na pergunta ${k + 1}`
+            );
         }
         if (respostaErrada === 0) {
-            return alert(`Insira uma resposta incorreta para imagem na pegunta ${k+1}`);
+            return alert(
+                `Insira uma resposta incorreta para imagem na pegunta ${k + 1}`
+            );
         } else if (respostaErrada === 1) {
-            return alert(`Insira no mínimo uma resposta incorreta para pergunta ${k+1}`);
+            return alert(
+                `Insira no mínimo uma resposta incorreta para pergunta ${k + 1}`
+            );
         } else if (respostaErrada === 2) {
-            return alert(`Insira uma imagem para resposta na pergunta ${k+1}`);
+            return alert(
+                `Insira uma imagem para resposta na pergunta ${k + 1}`
+            );
         }
     }
 
@@ -773,7 +787,7 @@ function escolherQuizz2(response) {
     document.querySelector('.quizz-page').classList.remove('hidden');
     let index = todosQuizzes.findIndex((x) => x.id === Number(quizzID));
     quizzSelecionado = todosQuizzes[index];
-    
+
     renderizarQuizz();
 }
 
@@ -814,12 +828,11 @@ function listarQuizzUsuario() {
     for (let i = 0; i < lista.length; i++) {
         let indice = Number(lista[i]);
         console.log(indice);
-        
 
         for (let j = 0; j < todosQuizzes.length; j++) {
-            if(todosQuizzes[j].id == indice ) {
+            if (todosQuizzes[j].id == indice) {
                 console.log(todosQuizzes);
-                console.log(todosQuizzes[j])
+                console.log(todosQuizzes[j]);
 
                 console.log(todosQuizzes[j].id);
                 document.querySelector('.quizzes-user').innerHTML += `
@@ -829,12 +842,8 @@ function listarQuizzUsuario() {
                     <span class="hidden">${todosQuizzes[j].id}</span>
                 </div>   
             `;
-
             }
-
-
         }
-        
     }
 }
 // -------------------------------------
