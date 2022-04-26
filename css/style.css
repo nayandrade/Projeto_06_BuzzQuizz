@@ -155,6 +155,10 @@ header > h1 {
     margin-right: 0px;
 }
 
+.quizzes-user :nth-child(3n) {
+    margin-right: 0px;
+}
+
 .quizz {
     width: 340px;
     height: 181px;
@@ -548,6 +552,10 @@ header > h1 {
     }
 
     .quizzes :nth-child(3n) {
+        margin-right: 15px;
+    }
+
+    .quizzes-user :nth-child(3n) {
         margin-right: 15px;
     }
     /*fim tela 1*/

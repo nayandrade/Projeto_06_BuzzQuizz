@@ -12,6 +12,14 @@ let userQuizz = { image: '', levels: [], questions: [], title: '' };
 let tamPerguntas = 0;
 let tamNiveis = 0;
 
+/* Considerando que a gente sempre dá location.reload pra voltar pra tela inicial, array meuQuizzes tbm vai ser resetado
+portanto é preciso atualiza-lo*/
+const dadosSerializados = localStorage.getItem('ids');
+const dadosDeserializados = JSON.parse(dadosSerializados);
+for(let d=0; d<dadosDeserializados.length; d++){
+    meusQuizzes.push(dadosDeserializados[d]);
+}
+
 buscarQuizzes();
 function buscarQuizzes() {
     let promise = axios.get(
@@ -32,9 +40,12 @@ function carregarQuizzes(response) {
 //temQuizz();
 
 function renderizarQuizzes() {
+    //let listaQuizzes = {};
     let quiz = document.querySelector('.quizzes');
     quiz.innerHTML = '';
-
+    /*for(let i=0; i<meusQuizzes.length; i++){
+        listaQuizzes = todosQuizzes.filter((filtroQuizz) => filtroQuizz.id != meusQuizzes[i])
+    }*/
     for (let i = 0; i < todosQuizzes.length; i++) {
         quiz.innerHTML += `
             <div class="quizz" onclick="escolherQuizz(this)">
