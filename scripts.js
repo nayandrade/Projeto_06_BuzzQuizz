@@ -1,5 +1,6 @@
 let todosQuizzes = [];
 let quizzSelecionado = {};
+let meusQuizzes = [];
 let quizzID;
 const TEMPO2S = 2 * 1000;
 const TEMPO_MEIO_S = 500;
@@ -18,6 +19,7 @@ function buscarQuizzes() {
     );
     promise.then(verPromise);
     promise.then(carregarQuizzes);
+    promise.then(temQuizz);
     //promise.catch(tratarFalha);
 }
 
@@ -26,6 +28,8 @@ function carregarQuizzes(response) {
     console.log(todosQuizzes);
     renderizarQuizzes();
 }
+
+//temQuizz();
 
 function renderizarQuizzes() {
     let quiz = document.querySelector('.quizzes');
@@ -42,23 +46,22 @@ function renderizarQuizzes() {
     }
 }
 
- function escolherQuizz(element) {
-     document.querySelector('.conteiner').classList.add('hidden');
-     document.querySelector('.quizz-page').classList.remove('hidden');
-     quizzID = element.querySelector('span').innerHTML.trim();
-     console.log(quizzID);
-     console.log(typeof(quizzID))
-     console.log(element)
-     let index = todosQuizzes.findIndex(x => x.id === Number(quizzID));
-     console.log(index);
-     console.log(element.id)
-     console.log(element.title)
-     console.log(element.image)
-     quizzSelecionado = todosQuizzes[index];
-     console.log(quizzSelecionado);
-     renderizarQuizz();
- }
-
+function escolherQuizz(element) {
+    document.querySelector('.conteiner').classList.add('hidden');
+    document.querySelector('.quizz-page').classList.remove('hidden');
+    quizzID = element.querySelector('span').innerHTML.trim();
+    console.log(quizzID);
+    console.log(typeof quizzID);
+    console.log(element);
+    let index = todosQuizzes.findIndex((x) => x.id === Number(quizzID));
+    console.log(index);
+    console.log(element.id);
+    console.log(element.title);
+    console.log(element.image);
+    quizzSelecionado = todosQuizzes[index];
+    console.log(quizzSelecionado);
+    renderizarQuizz();
+}
 
 function renderizarQuizz() {
     document.querySelector('.quizz-page').innerHTML = `
@@ -729,12 +732,17 @@ function validarNivel() {
             }
         }
     }
-    if(boolval){
-        document.querySelector(".creator-page.p3").classList.add("hidden");
-        for(let i=0; i<userQuizz.questions.length; i++){
-            userQuizz.questions[i].answers = userQuizz.questions[i].answers.filter((answer) => answer.text != '');
+    if (boolval) {
+        document.querySelector('.creator-page.p3').classList.add('hidden');
+        for (let i = 0; i < userQuizz.questions.length; i++) {
+            userQuizz.questions[i].answers = userQuizz.questions[
+                i
+            ].answers.filter((answer) => answer.text != '');
         }
-        const promisePost = axios.post("https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes", userQuizz);
+        const promisePost = axios.post(
+            'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes',
+            userQuizz
+        );
         promisePost.then(mostrarQuizz);
     } else {
         return alert('Insira um nível com acerto 0%');
@@ -778,46 +786,95 @@ function mostrarQuizz(id) {
     `;
     console.log(id);
     console.log(id.data.id);
-    quizzID = id.data.id
+    quizzID = id.data.id;
+    meusQuizzes.push(quizzID);
     let promise = axios.get(
         'https://mock-api.driven.com.br/api/v6/buzzquizz/quizzes'
     );
     promise.then(verPromise);
     promise.then(carregarQuizz2);
-    
-    //armazenarQuizz(id.data);
+
+    armazenarQuizz();
 }
 
 function carregarQuizz2(response) {
-    todosQuizzes = response.data;  
-    
-    
+    todosQuizzes = response.data;
+    console.log(todosQuizzes);
+
     //document.querySelector('.creator-page.p1').classList.remove('hidden');
-    
     //document.querySelector('.conteiner').classList.remove('hidden');
-      
     //promise.catch(tratarFalha);
     //let dom = document.querySelector('.creator-page.p4 .quizz');
     //escolherQuizz(dom);
 }
 
-function escolherQuizz2 () {
+function escolherQuizz2() {
     document.querySelector('.quizz-creator').classList.add('hidden');
     document.querySelector('.creator-page.p4').classList.add('hidden');
     document.querySelector('.quizz-page').classList.remove('hidden');
-    let index = todosQuizzes.findIndex(x => x.id === Number(quizzID));
+    let index = todosQuizzes.findIndex((x) => x.id === Number(quizzID));
     quizzSelecionado = todosQuizzes[index];
-    renderizarQuizz();  
-
+    renderizarQuizz();
 }
-
 
 function escolherVoltar() {
     window.location.reload();
 }
 
-/*function armazenarQuizz(quizzLocal){
+function armazenarQuizz() {
+    let idSerializado = JSON.stringify(meusQuizzes);
+    localStorage.setItem('ids', idSerializado);
+    console.log(idSerializado);
+}
 
-    localStorage.setItem(`${quizzLocal.id}`)
-}*/
+function temQuizz() {
+    let minhaLista = localStorage.getItem('ids');
+    console.log(minhaLista);
+    if (minhaLista !== null) {
+        listarQuizzUsuario();
+    } else {
+        listarQuizzCreate();
+    }
+}
+
+function listarQuizzCreate() {
+    document.querySelector('.quizz-create').classList.remove('hidden');
+    document.querySelector('.all-quizzes-user').classList.add('hidden');
+}
+
+function listarQuizzUsuario() {
+    document.querySelector('.quizz-create').classList.add('hidden');
+    document.querySelector('.all-quizzes-user').classList.remove('hidden');
+    console.log(todosQuizzes);
+
+    const idSerializada = localStorage.getItem('ids');
+    const lista = JSON.parse(idSerializada);
+    console.log(lista);
+
+    for (let i = 0; i < lista.length; i++) {
+        let indice = Number(lista[i]);
+        console.log(indice);
+        
+
+        for (let j = 0; j < todosQuizzes.length; j++) {
+            if(todosQuizzes[j].id == indice ) {
+                console.log(todosQuizzes);
+                console.log(todosQuizzes[j])
+
+                console.log(todosQuizzes[j].id);
+                document.querySelector('.quizzes-user').innerHTML += `
+                <div class="quizz" onclick="escolherQuizz(this)">
+                    <img src="${todosQuizzes[j].image}" alt=""/>
+                    <p>${todosQuizzes[j].title}</p>
+                    <span class="hidden">${todosQuizzes[j].id}</span>
+                </div>   
+            `;
+
+            }
+
+
+        }
+        
+    }
+}
 // -------------------------------------
