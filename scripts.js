@@ -802,13 +802,18 @@ function armazenarQuizz() {
 }
 
 function temQuizz() {
-    let minhaLista = localStorage.getItem('ids');
+    let minhaLista = JSON.parse(localStorage.getItem('ids'));
     console.log(minhaLista);
     if (minhaLista !== null) {
-        listarQuizzUsuario();
-    } else {
-        listarQuizzCreate();
-    }
+       for(let m = 0; m < todosQuizzes.length; m++){
+           for(let n = 0; n < minhaLista.length; n++){
+                if(todosQuizzes[m].id === minhaLista[n]){
+                    return listarQuizzUsuario();
+                }
+           }
+       }
+       listarQuizzCreate();
+    } 
 }
 
 function listarQuizzCreate() {
