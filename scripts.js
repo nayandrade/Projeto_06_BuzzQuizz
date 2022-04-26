@@ -214,7 +214,7 @@ function finalizarQuizz() {
         if (niveis[j].minValue === nivelFinal) {
             document.querySelector('.quizz-finalizar').innerHTML = `  
                 <div class="quizz-finalizar-titulo">
-                    <h3 class="white">${niveis[j].title}</h3>
+                    <h3 class="white">${nivel}% de acerto: ${niveis[j].title}</h3>
                 </div>
                 <div class="quizz-nivel">                         
                     <img src="${niveis[j].image}" alt="">
@@ -837,13 +837,23 @@ function listarQuizzUsuario() {
                 console.log(todosQuizzes[j].id);
                 document.querySelector('.quizzes-user').innerHTML += `
                 <div class="quizz" onclick="escolherQuizz(this)">
+                    <div class="quizz-button">
+                    <ion-icon name="create-outline" onclick="editarQuizz(this)" onclick></ion-icon>
+                    <ion-icon name="trash-bin-outline" onclick="apagarQuizz(this)"></ion-icon>
+                    </div>
                     <img src="${todosQuizzes[j].image}" alt=""/>
                     <p>${todosQuizzes[j].title}</p>
                     <span class="hidden">${todosQuizzes[j].id}</span>
+                    <span class="hidden">${todosQuizzes[j].key}</span>
                 </div>   
             `;
             }
         }
     }
+}
+
+function apagarQuizz(element) {
+    confirm('Tem certeza que deseja deletar o quizz?')
+    
 }
 // -------------------------------------
