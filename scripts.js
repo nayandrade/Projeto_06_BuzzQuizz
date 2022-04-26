@@ -214,7 +214,7 @@ function finalizarQuizz() {
         if (niveis[j].minValue === nivelFinal) {
             document.querySelector('.quizz-finalizar').innerHTML = `  
                 <div class="quizz-finalizar-titulo">
-                    <h3 class="white">${nivel}% de acerto: ${niveis[j].title}</h3>
+                    <h3 class="white">${Math.round(nivel)}% de acerto: ${niveis[j].title}</h3>
                 </div>
                 <div class="quizz-nivel">                         
                     <img src="${niveis[j].image}" alt="">
